@@ -5,8 +5,8 @@ playlist_song = db.Table(
     'playlist_song',
     db.Model.metadata,
     db.Column('id', db.Integer, primary_key=True ),
-    db.Column('song_id', db.Integer, db.ForeignKey('songs.id')),
-    db.Column('playlist_id', db.Integer, db.ForeignKey('playlists.id')),
+    db.Column('song_id', db.Integer, db.ForeignKey(add_prefix_for_prod('songs.id'))),
+    db.Column('playlist_id', db.Integer, db.ForeignKey(add_prefix_for_prod('playlists.id'))),
     db.Column('created_at', db.DateTime, default=datetime.now)
 )
 
