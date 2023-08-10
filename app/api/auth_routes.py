@@ -1,21 +1,13 @@
 from flask import Blueprint, jsonify, session, request
 from app.models import User, db
-from app.forms import LoginForm, PreLoginForm
-from app.forms import SignUpForm
+from app.forms import LoginForm, SignUpForm, PreLoginForm
+from app.forms import validation_errors_to_error_messages
 from flask_login import current_user, login_user, logout_user, login_required
 
 auth_routes = Blueprint('auth', __name__)
 
 
-def validation_errors_to_error_messages(validation_errors):
-    """
-    Simple function that turns the WTForms validation errors into a simple list
-    """
-    errorMessages = {}
-    for field in validation_errors:
-        error_message_concat = '. '.join(validation_errors[field])
-        errorMessages[field] = error_message_concat
-    return errorMessages
+
 
 # 01 Authenticates a user GET /api/auth/
 
@@ -23,10 +15,12 @@ def validation_errors_to_error_messages(validation_errors):
 def authenticate():
     """
     Authenticates a user.
+    If user is authenticated, return user in dictionary.
+    If not, return 401 unauthorized errors.
     """
     if current_user.is_authenticated:
         return current_user.to_dict()
-    return {'errors': ['Unauthorized']}, 401
+    return {'errors': 'Unauthorized'}, 401
 
 # 02 Login a user POST /api/auth/login
 
@@ -44,7 +38,7 @@ def login():
         user = User.query.filter(User.email == form.data['email']).first()
         login_user(user)
         return user.to_dict()
-    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 
 # 03 Log our a user GET /api/auth/logout
 
@@ -72,19 +66,19 @@ def sign_up():
             email=form.data['email'],
             password=form.data['password']
         )
-        if 'first_name' in form.data:
+        if form.data['first_name'] is not None:
             user.first_name = form.data['first_name']
-        if 'last_name' in form.data:
+        if form.data['last_name'] is not None:
             user.last_name = form.data['last_name']
-        if 'bio' in form.data:
+        if form.data['bio'] is not None:
             user.bio = form.data['bio']
-        if 'profile_pic_url' in form.data:
+        if form.data['profile_pic_url'] is not None:
             user.profile_pic_url = form.data['profile_pic_url']
         db.session.add(user)
         db.session.commit()
         login_user(user)
-        return user.to_dict()
-    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+        return user.to_dict(), 201
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 
 # 05 Return unauthorized GET /api/auth/unauthorized
 
@@ -112,4 +106,4 @@ def prelogin():
             return {'message': 'email exists'}, 200
         else:
             return {'errors': 'email does not exist'}, 404
-    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 400
