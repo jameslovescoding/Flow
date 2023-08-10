@@ -6,7 +6,8 @@ from app.forms import validation_errors_to_error_messages
 
 user_routes = Blueprint('users', __name__)
 
-# 07 Get all users GET /api/users/
+# 07 Get all users
+# GET /api/users/
 
 @user_routes.route('/')
 @login_required
@@ -17,7 +18,8 @@ def users():
     users = User.query.all()
     return {'users': [user.to_dict_public() for user in users]}
 
-# 08 Get a user by id GET /api/users/:id
+# 08 Get a user by id
+# GET /api/users/:id
 
 @user_routes.route('/<int:id>')
 @login_required
@@ -32,6 +34,7 @@ def user(id):
     return user.to_dict_public()
 
 # 09 Update a user's info
+# PUT /api/users/:id
 
 @user_routes.route('/<int:id>', methods=['PUT'])
 @login_required
@@ -67,6 +70,7 @@ def update_user(id):
     return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 
 # 10 Delete a user
+# DELETE /api/users/:id
 
 @user_routes.route('/<int:id>', methods=['DELETE'])
 @login_required

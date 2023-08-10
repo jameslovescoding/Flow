@@ -9,7 +9,8 @@ auth_routes = Blueprint('auth', __name__)
 
 
 
-# 01 Authenticates a user GET /api/auth/
+# 01 Authenticates a user
+# GET /api/auth/
 
 @auth_routes.route('/')
 def authenticate():
@@ -22,7 +23,8 @@ def authenticate():
         return current_user.to_dict()
     return {'errors': 'Unauthorized'}, 401
 
-# 02 Login a user POST /api/auth/login
+# 02 Login a user
+# POST /api/auth/login
 
 @auth_routes.route('/login', methods=['POST'])
 def login():
@@ -40,7 +42,8 @@ def login():
         return user.to_dict()
     return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 
-# 03 Log our a user GET /api/auth/logout
+# 03 Log our a user
+# GET /api/auth/logout
 
 @auth_routes.route('/logout')
 def logout():
@@ -50,7 +53,8 @@ def logout():
     logout_user()
     return {'message': 'User logged out'}
 
-# 04 Sign up new user POST /api/auth/signup
+# 04 Sign up new user
+# POST /api/auth/signup
 
 @auth_routes.route('/signup', methods=['POST'])
 def sign_up():
@@ -80,7 +84,8 @@ def sign_up():
         return user.to_dict(), 201
     return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 
-# 05 Return unauthorized GET /api/auth/unauthorized
+# 05 Return unauthorized
+# GET /api/auth/unauthorized
 
 @auth_routes.route('/unauthorized')
 def unauthorized():
@@ -89,7 +94,8 @@ def unauthorized():
     """
     return {'errors': ['Unauthorized']}, 401
 
-# 06 Check if the email exists POST /api/auth/prelogin
+# 06 Check if the email exists
+# POST /api/auth/prelogin
 @auth_routes.route('/prelogin', methods=['POST'])
 def prelogin():
     """
