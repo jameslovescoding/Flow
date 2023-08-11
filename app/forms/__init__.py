@@ -1,6 +1,8 @@
 from .login_form import LoginForm, PreLoginForm
 from .signup_form import SignUpForm
 from .update_user_form import UpdateUserForm
+from .create_song_form import CreateSongForm
+from .update_song_form import UpdateSongForm
 
 def validation_errors_to_error_messages(validation_errors):
     """

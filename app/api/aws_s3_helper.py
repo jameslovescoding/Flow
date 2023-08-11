@@ -9,11 +9,13 @@ ALLOWED_EXTENSIONS_IMAGE = {"pdf", "png", "jpg", "jpeg", "gif"}
 ALLOWED_EXTENSIONS_AUDIO = {"mp3", "wav", "aac", "wma", "flac"}
 
 
+
 s3 = boto3.client(
    "s3",
    aws_access_key_id=os.environ.get("S3_KEY"),
    aws_secret_access_key=os.environ.get("S3_SECRET")
 )
+
 
 
 def get_unique_filename(filename):
@@ -24,6 +26,7 @@ def get_unique_filename(filename):
     ext = filename.rsplit(".", 1)[1].lower()
     unique_filename = uuid.uuid4().hex
     return f"{unique_filename}.{ext}"
+
 
 
 def upload_file_to_s3(file, acl="public-read"):
@@ -49,6 +52,7 @@ def upload_file_to_s3(file, acl="public-read"):
     return {"url": f"{S3_LOCATION}{file.filename}"}
 
 
+
 def remove_file_from_s3(file_url):
     # AWS needs the image file name, not the URL,
     # so you split that out of the URL
@@ -62,3 +66,13 @@ def remove_file_from_s3(file_url):
     except Exception as e:
         return { "errors": str(e) }
     return True
+
+
+
+def batch_remove_from_s3(file_type, file_urls):
+    for url in file_urls:
+        delete_res = remove_file_from_s3(url)
+        if delete_res is True:
+            print(f"Successfully deleted {file_type} with url {url} from aws s3")
+        else:
+            print(f"Failed to delete {file_type} with url {url} from aws s3. Errors: {delete_res.errors}")
