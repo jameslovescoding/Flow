@@ -16,11 +16,11 @@ class User(db.Model, UserMixin):
         __table_args__ = {'schema': SCHEMA}
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    first_name = Column(String(40))
-    last_name = Column(String(40))
     username = Column(String(40), nullable=False, unique=True)
     hashed_password = Column(String(255), nullable=False)
     email = Column(String(255), nullable=False, unique=True)
+    first_name = Column(String(40))
+    last_name = Column(String(40))
     bio = Column(String(255))
     profile_pic_url = Column(String(1024))
     created_at = Column(DateTime, default=datetime.now)

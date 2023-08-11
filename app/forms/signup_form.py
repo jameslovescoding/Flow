@@ -48,5 +48,6 @@ class SignUpForm(FlaskForm):
     password = PasswordField('password', validators=[
         DataRequired(),
         Length(min=8, max=255, message='Password should be 8 to 255 long'),
-        Regexp(r'^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])', message='Password must contain at least one digit, lowercase letter, uppercase letter, and special character(@#$%^&+=)')
+        Regexp(r'^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])',
+               message='Password must contain at least one digit, lowercase letter, uppercase letter, and special character(@#$%^&+=)')
     ])

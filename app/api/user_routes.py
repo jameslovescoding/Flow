@@ -41,17 +41,16 @@ def user(id):
 @login_required
 def update_user(id):
     """
-    Update a user by id and return updated user in a dictionary
-
-    Only support update first_name, last_name, bio, and profile picture
+    Update first name, last name, bio and profile picture of a user
+    The storage of profiel picture is using aws s3
     """
-    # user can only update its own user info
-    if current_user.id != id:
-        return {'errors': ['Unauthorized']}, 401
     # check if the user with this id exists
     user = User.query.get(id)
     if user is None:
         return {'errors': 'user not found'}, 404
+    # user can only update its own user info
+    if current_user.id != user.id:
+        return {'errors': ['Unauthorized']}, 401
     # use update user form to validate info
     form = UpdateUserForm()
     form['csrf_token'].data = request.cookies['csrf_token']
@@ -83,13 +82,13 @@ def update_user(id):
 @user_routes.route('/<int:id>', methods=['DELETE'])
 @login_required
 def delete_user(id):
-    # user can only delete its own account
-    if current_user.id != id:
-        return {'errors': ['Unauthorized']}, 401
     # check if the user with this id exists
     user = User.query.get(id)
     if user is None:
         return {'errors': 'user not found'}, 404
+    # user can only delete its own account
+    if current_user.id != user.id:
+        return {'errors': ['Unauthorized']}, 401
     db.session.delete(user)
     db.session.commit()
     return {'message': f'Successfully deleted user with id {id}'}

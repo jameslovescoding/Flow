@@ -6,9 +6,6 @@ from flask_login import current_user, login_user, logout_user, login_required
 
 auth_routes = Blueprint('auth', __name__)
 
-
-
-
 # 01 Authenticates a user
 # GET /api/auth/
 
@@ -23,13 +20,15 @@ def authenticate():
         return current_user.to_dict()
     return {'errors': 'Unauthorized'}, 401
 
-# 02 Login a user
+
+
+# 02 Login a user using email
 # POST /api/auth/login
 
 @auth_routes.route('/login', methods=['POST'])
 def login():
     """
-    Logs a user in
+    Logs a user in using email
     """
     form = LoginForm()
     # Get the csrf_token from the request cookie and put it into the
@@ -42,7 +41,9 @@ def login():
         return user.to_dict()
     return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 
-# 03 Log our a user
+
+
+# 03 Log out a user
 # GET /api/auth/logout
 
 @auth_routes.route('/logout')
@@ -53,13 +54,17 @@ def logout():
     logout_user()
     return {'message': 'User logged out'}
 
+
+
 # 04 Sign up new user
 # POST /api/auth/signup
 
 @auth_routes.route('/signup', methods=['POST'])
 def sign_up():
     """
-    Creates a new user and logs them in
+    Creates a new user and logs them in.
+    Sign up with email, username and password.
+    User can choose to add first and last name, profile pic and bio later using update user api.
     """
     form = SignUpForm()
     form['csrf_token'].data = request.cookies['csrf_token']
@@ -70,13 +75,13 @@ def sign_up():
             email=form.data['email'],
             password=form.data['password']
         )
-        # Sign up with email, username and password
-        # add first and last name, profile pic and bio later using update user api
         db.session.add(user)
         db.session.commit()
         login_user(user)
         return user.to_dict(), 201
     return {'errors': validation_errors_to_error_messages(form.errors)}, 400
+
+
 
 # 05 Return unauthorized
 # GET /api/auth/unauthorized
@@ -88,12 +93,14 @@ def unauthorized():
     """
     return {'errors': ['Unauthorized']}, 401
 
+
+
 # 06 Check if the email exists
 # POST /api/auth/prelogin
 @auth_routes.route('/prelogin', methods=['POST'])
 def prelogin():
     """
-    Logs a user in
+    Check if the email exists.
     """
     form = PreLoginForm()
     # Get the csrf_token from the request cookie and put it into the
