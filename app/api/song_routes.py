@@ -10,14 +10,18 @@ song_routes = Blueprint('songs', __name__)
 @song_routes.route('/')
 @login_required
 def get_all_songs():
-    pass
+    all_songs = Song.query.all()
+    return {"all_songs": [song.to_dict() for song in all_songs]}
 
 # 12 Get a song by id
 # GET /api/songs/:id
-@song_routes.route('/')
+@song_routes.route('/<int:id>')
 @login_required
 def get_song_by_id(id):
-    pass
+    song = Song.query.get(id)
+    if song is None:
+        return {'errors': f'song with id {id} does not exist'}, 404
+    return song.to_dict()
 
 # 13 Create a song
 # POST /api/songs/new

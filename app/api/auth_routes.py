@@ -70,14 +70,8 @@ def sign_up():
             email=form.data['email'],
             password=form.data['password']
         )
-        if form.data['first_name'] is not None:
-            user.first_name = form.data['first_name']
-        if form.data['last_name'] is not None:
-            user.last_name = form.data['last_name']
-        if form.data['bio'] is not None:
-            user.bio = form.data['bio']
-        if form.data['profile_pic_url'] is not None:
-            user.profile_pic_url = form.data['profile_pic_url']
+        # Sign up with email, username and password
+        # add first and last name, profile pic and bio later using update user api
         db.session.add(user)
         db.session.commit()
         login_user(user)

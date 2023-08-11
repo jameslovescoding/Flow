@@ -1,8 +1,9 @@
 from flask import Blueprint, jsonify, redirect, url_for, request
 from flask_login import login_required, current_user
-from app.models import User, db
+from app.models import User, db, Song
 from app.forms import UpdateUserForm
 from app.forms import validation_errors_to_error_messages
+from .aws_s3_helper import get_unique_filename, upload_file_to_s3
 
 user_routes = Blueprint('users', __name__)
 
@@ -62,8 +63,15 @@ def update_user(id):
             user.last_name = form.data['last_name']
         if form.data['bio'] is not None:
             user.bio = form.data['bio']
-        if form.data['profile_pic_url'] is not None:
-            user.profile_pic_url = form.data['profile_pic_url']
+        if form.data['profile_pic_file'] is not None:
+            profile_pic = form.data['profile_pic_file']
+            profile_pic.filename = get_unique_filename(profile_pic.filename)
+            upload = upload_file_to_s3(profile_pic)
+            print(upload)
+            if "url" not in upload:
+                return {'errors': "Failed to upload your profile picture"}, 500
+            url = upload["url"]
+            user.profile_pic_url = url
         db.session.add(user)
         db.session.commit()
         return user.to_dict()
