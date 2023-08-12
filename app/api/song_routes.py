@@ -1,7 +1,14 @@
 from flask import Blueprint, jsonify, redirect, url_for, request
 from flask_login import login_required, current_user
 from app.models import User, db, Song, Comment
-from app.forms import validation_errors_to_error_messages, CreateSongForm, UpdateSongForm
+
+from app.forms import (
+    validation_errors_to_error_messages,
+    CreateSongForm,
+    UpdateSongForm,
+    CommentForm
+)
+
 from .aws_s3_helper import (
     get_unique_filename,
     upload_file_to_s3,
@@ -91,7 +98,7 @@ def create_new_song():
 def update_song_by_id(id):
     """
     Updating song's info
-    except song file and thumbnail file on aws s3
+    except for song file and thumbnail file
     """
     # check if the song exists
     song = Song.query.get(id)
@@ -140,7 +147,7 @@ def update_song_by_id(id):
 @login_required
 def update_song_audio_file(id):
     """
-    Updating song's audio file
+    Updating song's audio file on aws s3
     """
     # check if the song exists
     song = Song.query.get(id)
@@ -198,9 +205,7 @@ def update_song_audio_file(id):
 @login_required
 def update_song_thumbnail_file(id):
     """
-    Updating song file, thumbnail file and other information should
-    be indepedent from each other. This update api servers as a
-    unified interface for updating request.
+    Update a song's thumbnail file on aws s3
     """
     # check if the song exists
     song = Song.query.get(id)
@@ -246,6 +251,34 @@ def update_song_thumbnail_file(id):
     # return updated song
     return song.to_dict()
 
+@song_routes.route('/<int:id>/thumbnail', methods=['DELETE'])
+@login_required
+def delete_song_thumbnail_file(id):
+    song = Song.query.get(id)
+    if song is None:
+        return {"errors": "song not found"}, 404
+
+    # only the owner of the song can update the song
+    if song.uploaded_by_user_id != current_user.id:
+        return {'errors': 'Unauthorized'}, 401
+
+    # check if the song has a thumbnail
+    if song.thumbnail_url is None:
+        return {"errors": f"Song with id {id} does not have thumbnail"}, 400
+
+    # remove the thumbnail from awss3
+    delete_file = remove_file_from_s3(song.thumbnail_url)
+
+    # check result
+    if delete_file is not True:
+        return {"errors": f"Failed to remove thumbnail, {delete_file.errors}"}, 500
+
+    # save changes and commit
+    song.thumbnail_url = None
+    db.session.commit()
+    return song.to_dict()
+
+
 
 # 15 Delete a song by id
 # DELETE /api/songs/:id
@@ -284,7 +317,32 @@ def delete_song_by_id(id):
 @song_routes.route('/<int:id>/comments', methods=['POST'])
 @login_required
 def create_comment_by_song_id(id):
-    pass
+    """
+    create a comment for a song by song id
+    users can comment on their own songs
+    users can leave comments on one song
+    """
+    # check if the song exists
+    song = Song.query.get(id)
+    if song is None:
+        return {"errors": "song not found"}, 404
+
+    # use form to validate the comment data
+    form = CommentForm()
+    if not form.validate_on_submit():
+        return {'errors': validation_errors_to_error_messages(form.errors)}, 400
+
+    # save and commit
+    new_comment = Comment(
+        song_id=id,
+        user_id=current_user.id,
+        text=form.data["text"]
+    )
+    db.session.add(new_comment)
+    db.session.commit()
+
+    # return the comment
+    return new_comment.to_dict()
 
 
 
@@ -294,7 +352,24 @@ def create_comment_by_song_id(id):
 @song_routes.route('/<int:id>/likes', methods=['POST'])
 @login_required
 def create_like_by_song_id(id):
-    pass
+    """
+    User can like a song
+    """
+    # check if the song exists
+    song = Song.query.get(id)
+    if song is None:
+        return {"errors": "song not found"}, 404
+
+    # check if the user already liked the song
+    if song in current_user.liked_songs:
+        return {"errors": "user already liked the song"}, 400
+
+    # like the song and commit changes
+    current_user.liked_songs.append(song)
+    db.session.commit()
+
+    # return message
+    return {"message": "Successfully liked the song"}
 
 
 
@@ -304,4 +379,21 @@ def create_like_by_song_id(id):
 @song_routes.route('/<int:id>/likes', methods=['DELETE'])
 @login_required
 def cancel_like_by_song_id(id):
-    pass
+    """
+    User can unlike a song
+    """
+    # check if the song exists
+    song = Song.query.get(id)
+    if song is None:
+        return {"errors": "song not found"}, 404
+
+    # check if the user already liked the song
+    if song not in current_user.liked_songs:
+        return {"errors": "user have not liked the song yet"}, 400
+
+    # unlike the song and commit changes
+    current_user.liked_songs.remove(song)
+    db.session.commit()
+
+    # return message
+    return {"message": "Successfully unliked the song"}

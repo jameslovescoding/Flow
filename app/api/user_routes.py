@@ -79,7 +79,6 @@ def update_user(id):
         user.bio = form.data['bio']
 
     # commit changes and return the updated user
-    db.session.add(user)
     db.session.commit()
     return user.to_dict()
 
@@ -136,7 +135,6 @@ def update_user_profile_pic(id):
     user.profile_pic_url = upload_pic["url"]
 
     # commit changes and return the updated user
-    db.session.add(user)
     db.session.commit()
     return user.to_dict()
 
@@ -173,7 +171,6 @@ def delete_user_profile_pic(id):
     user.profile_pic_url = None
 
     # commit changes and return updated user
-    db.session.add(user)
     db.session.commit()
     return user.to_dict()
 
