@@ -1,8 +1,14 @@
 from flask import Blueprint, jsonify, redirect, url_for, request
 from flask_login import login_required, current_user
-from app.models import User, db
+from app.models import User, db, Song
 from app.forms import UpdateUserForm
 from app.forms import validation_errors_to_error_messages
+from .aws_s3_helper import (
+    get_unique_filename,
+    upload_file_to_s3,
+    remove_file_from_s3,
+    batch_remove_from_s3
+)
 
 user_routes = Blueprint('users', __name__)
 
@@ -29,6 +35,7 @@ def user(id):
     """
     user = User.query.get(id)
 
+    # check if the user exists
     if user is None:
         return {'errors': 'user not found'}, 404
     return user.to_dict_public()
@@ -40,34 +47,133 @@ def user(id):
 @login_required
 def update_user(id):
     """
-    Update a user by id and return updated user in a dictionary
-
-    Only support update first_name, last_name, bio, and profile picture
+    Update first name, last name, bio of a user
     """
-    # user can only update its own user info
-    if current_user.id != id:
-        return {'errors': ['Unauthorized']}, 401
     # check if the user with this id exists
     user = User.query.get(id)
     if user is None:
         return {'errors': 'user not found'}, 404
+
+    # user can only update its own user info
+    if current_user.id != user.id:
+        return {'errors': 'Unauthorized'}, 401
+
     # use update user form to validate info
     form = UpdateUserForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     #print(form.data)
-    if form.validate_on_submit():
-        if form.data['first_name'] is not None:
-            user.first_name = form.data['first_name']
-        if form.data['last_name'] is not None:
-            user.last_name = form.data['last_name']
-        if form.data['bio'] is not None:
-            user.bio = form.data['bio']
-        if form.data['profile_pic_url'] is not None:
-            user.profile_pic_url = form.data['profile_pic_url']
-        db.session.add(user)
-        db.session.commit()
-        return user.to_dict()
-    return {'errors': validation_errors_to_error_messages(form.errors)}, 400
+
+    if not form.validate_on_submit():
+        return {'errors': validation_errors_to_error_messages(form.errors)}, 400
+
+    # check if there's changes
+    if len(form.data) == 0:
+        return {'errors': "Missing fields to update"}, 400
+
+    # update
+    if form.data['first_name'] is not None:
+        user.first_name = form.data['first_name']
+    if form.data['last_name'] is not None:
+        user.last_name = form.data['last_name']
+    if form.data['bio'] is not None:
+        user.bio = form.data['bio']
+
+    # commit changes and return the updated user
+    db.session.commit()
+    return user.to_dict()
+
+
+
+# 27 Update a user's profile picture
+# PUT /api/users/:id/profile-pic
+
+@user_routes.route('/<int:id>/profile-pic', methods=['PUT'])
+@login_required
+def update_user_profile_pic(id):
+    """
+    Update profile picture of a user
+    The storage of profile picture is using aws s3
+    """
+    # check if the user with this id exists
+    user = User.query.get(id)
+    if user is None:
+        return {'errors': 'user not found'}, 404
+
+    # user can only update its own user info
+    if current_user.id != user.id:
+        return {'errors': 'Unauthorized'}, 401
+
+    # use update user form to validate info
+    form = UpdateUserForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if not form.validate_on_submit():
+        return {'errors': validation_errors_to_error_messages(form.errors)}, 400
+
+    # check if the file is in the form
+    if form.data['profile_pic_file'] is None:
+        return {"errors": "profile picture file is required"}, 400
+
+    # save the new profile picture to aws s3
+    profile_pic = form.data['profile_pic_file']
+
+    # we use previously generated name if it exists
+    if user.profile_pic_url is None:
+        profile_pic.filename = get_unique_filename(profile_pic.filename)
+    else:
+        profile_pic.filename = user.profile_pic_url
+
+    # aws will overwrite old file with new one if they have same filename
+    upload_pic = upload_file_to_s3(profile_pic)
+
+    print(upload_pic)
+
+    # check result
+    if "url" not in upload_pic:
+        return {'errors': "Failed to upload your profile picture"}, 500
+
+    # save the url to the user
+    user.profile_pic_url = upload_pic["url"]
+
+    # commit changes and return the updated user
+    db.session.commit()
+    return user.to_dict()
+
+
+
+# 28 Delete a user's profile picture
+# DELETE /api/users/:id/profile-pic
+
+@user_routes.route('/<int:id>/profile-pic', methods=['DELETE'])
+@login_required
+def delete_user_profile_pic(id):
+    """
+    Delete profile picture of a user
+    The storage of profile picture is using aws s3
+    """
+    # check if the user with this id exists
+    user = User.query.get(id)
+    if user is None:
+        return {'errors': 'user not found'}, 404
+
+    # user can only update its own user info
+    if current_user.id != user.id:
+        return {'errors': 'Unauthorized'}, 401
+
+    # if the user doesn't have profile picture, return error
+    profile_pic_url_old = user.profile_pic_url
+    if profile_pic_url_old is None:
+        return {"errors": "The user does not have a profile picture"}, 400
+
+    # delete the profile picture from aws s3
+    batch_remove_from_s3("profile picture", [profile_pic_url_old])
+
+    # delete profile picture url from the user
+    user.profile_pic_url = None
+
+    # commit changes and return updated user
+    db.session.commit()
+    return user.to_dict()
+
 
 # 10 Delete a user
 # DELETE /api/users/:id
@@ -75,13 +181,28 @@ def update_user(id):
 @user_routes.route('/<int:id>', methods=['DELETE'])
 @login_required
 def delete_user(id):
-    # user can only delete its own account
-    if current_user.id != id:
-        return {'errors': ['Unauthorized']}, 401
     # check if the user with this id exists
     user = User.query.get(id)
     if user is None:
         return {'errors': 'user not found'}, 404
+
+    # user can only delete its own account
+    if current_user.id != user.id:
+        return {'errors': ['Unauthorized']}, 401
+
+    # delete all songs and profile picture on aws s3
+    profile_pic_url_old = user.profile_pic_url
+    batch_remove_from_s3("profile picture", [profile_pic_url_old])
+
+    # delete all songs files on aws s3
+    song_url_list = [song.s3_key for song in user.owned_songs]
+    batch_remove_from_s3("song file", song_url_list)
+
+    # delete all thumbnail files on aws s3
+    thumbnail_url_list = [song.thumbnail_url for song in user.owned_songs if song.thumbnail_url is not None]
+    batch_remove_from_s3("thumbnail file", thumbnail_url_list)
+
+    # delete the user and commit changes
     db.session.delete(user)
     db.session.commit()
     return {'message': f'Successfully deleted user with id {id}'}
