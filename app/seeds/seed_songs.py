@@ -8,7 +8,7 @@ def seed_songs():
     song1 = Song(
       title="Northern Lights Everything (Dave' Sonar 3am. Mashup)",
       artist="Alexander Kasyarumov, Sergey Stepanovich, Danny Cullen, Kevin Murphy, Daniela Glogojeanu, Esmee Bor Stotijn, Jhonathan David Monsalve Torres",
-      album="Uplifting Only: Orchestral Trance Year Mix 2016 (Mixed by Ori Uplift)",
+      album="Orchestral Trance Year Mix 2016",
       genre="uplifting trance",
       s3_key="aws-s3-key",
       thumbnail_url="https://i.scdn.co/image/ab67616d0000b2739c6ecfda15118f7c2c57bff8",
