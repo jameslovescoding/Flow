@@ -118,14 +118,13 @@ def update_user_profile_pic(id):
     # save the new profile picture to aws s3
     profile_pic = form.data['profile_pic_file']
 
-    # we use previously generated name if it exists
-    if user.profile_pic_url is None:
-        profile_pic.filename = get_unique_filename(profile_pic.filename)
-    else:
-        profile_pic.filename = user.profile_pic_url
-
-    # aws will overwrite old file with new one if they have same filename
+    # we upload file and use new uuid name eveytime
+    # this is important for the browser to detect the change and update the page
+    profile_pic.filename = get_unique_filename(profile_pic.filename)
     upload_pic = upload_file_to_s3(profile_pic)
+
+    previous_filename = user.profile_pic_url
+    remove_file_from_s3(previous_filename)
 
     print(upload_pic)
 

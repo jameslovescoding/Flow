@@ -5,15 +5,15 @@ import { useModal } from "../../context/Modal";
 import { removeProfilePic } from "../../store/session";
 
 const RemoveProfilePicModal = () => {
-  const { closeModal } = useModal();
+  const { closeModal, setModalContent, setOnModalClose } = useModal();
   const dispatch = useDispatch();
   const sessionUser = useSelector(state => state.session.user);
   const [errors, setErrors] = useState(null);
 
   const handleYesButtonClick = async () => {
-    const errors = await dispatch(removeProfilePic(sessionUser.id));
-    if (errors) {
-      setErrors(errors);
+    const resErrors = await dispatch(removeProfilePic(sessionUser.id));
+    if (resErrors) {
+      setErrors(resErrors);
     } else {
       closeModal();
     }
@@ -25,7 +25,7 @@ const RemoveProfilePicModal = () => {
 
   return (<>
     <h1>Confirm Delete</h1>
-    <p>Are you sure you want to remove current profile picture?</p>
+    <p>Are you sure you want to remove your current profile picture?</p>
     <div>
       <button onClick={handleYesButtonClick}>Yes (Delete)</button>
       <button onClick={handleNoButtonClick}>No (Cancel)</button>

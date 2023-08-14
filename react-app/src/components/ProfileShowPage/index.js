@@ -14,9 +14,7 @@ const ProfileShowPage = () => {
   }
 
   const closeEditMode = () => {
-    console.log("close edit mode triggered")
     setEditMode(false)
-    return "the close edit mode callback function got runned"
   }
 
   let userIcon;

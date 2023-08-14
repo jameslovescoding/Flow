@@ -103,10 +103,12 @@ export const uploadProfilePic = (formData, userId) => async (dispatch) => {
 	})
 	if (response.ok) {
 		const updatedUser = await response.json();
+		// console.log(`PUT /api/users/${userId}/profile-pic`, "response.ok", updatedUser)
 		dispatch(setUser(updatedUser))
 		return null
 	} else {
 		const data = await response.json();
+		// console.log(`PUT /api/users/${userId}/profile-pic`, "errors", data.errors)
 		return data.errors
 	}
 }
@@ -119,10 +121,12 @@ export const removeProfilePic = (userId) => async (dispatch) => {
 	})
 	if (response.ok) {
 		const updatedUser = await response.json();
+		// console.log(`DELETE /api/users/${userId}/profile-pic`, "response.ok", updatedUser)
 		dispatch(setUser(updatedUser))
 		return null
 	} else {
 		const data = await response.json();
+		// console.log(`DELETE /api/users/${userId}/profile-pic`, "errors", data.errors)
 		return data.errors
 	}
 }

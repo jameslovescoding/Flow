@@ -13,12 +13,10 @@ function ProfilePageOpenModalButton({
 
   const onClick = () => {
     if (onModalClose) {
-      console.log("set onModelClose")
       setOnModalClose(() => onModalClose);
     }
     setModalContent(modalComponent);
     if (onButtonClick) {
-      console.log("call onItemClick")
       onButtonClick();
     }
   };

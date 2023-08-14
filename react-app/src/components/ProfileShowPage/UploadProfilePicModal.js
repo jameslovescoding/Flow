@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import { uploadProfilePic } from "../../store/session";
+import CustomCompleteModal from "./CustomCompleteModal";
+import CustomErrorModal from "./CustomErrorModal";
 
 const UploadProfilePicModal = ({ modalTitle }) => {
   const history = useHistory(); // so that you can redirect after the image upload is successful
@@ -21,13 +23,30 @@ const UploadProfilePicModal = ({ modalTitle }) => {
     // aws uploads can be a bit slow—displaying
     // some sort of loading message is a good idea
     setImageLoading(true);
-    const errors = await dispatch(uploadProfilePic(formData, sessionUser.id));
-    if (errors) {
+    const resErrors = await dispatch(uploadProfilePic(formData, sessionUser.id));
+    if (resErrors) {
       setImageLoading(false)
-      setErrors(errors);
+      setModalContent(<CustomErrorModal
+        modalTitle={"Errors"}
+        errorMessage={resErrors.profile_pic_file}
+        newModalContent={<UploadProfilePicModal modalTitle={modalTitle} />}
+      />)
     } else {
-      closeModal();
+      setModalContent(<CustomCompleteModal
+        modalTitle={"Upload Successful"}
+        completeText={"You profile picture has been successfully uploaded!"}
+        returnText={"your profile page"}
+        seconds={4}
+      />)
     }
+    // } else {
+    //   setModalContent(<CustomCompleteModal
+    //     modalTitle={"Upload Successful"}
+    //     completeText={"You profile picture has been successfully uploaded!"}
+    //     returnText={"your profile page"}
+    //     countDown={3}
+    //   />)
+    // }
   }
 
   return (<>
@@ -43,7 +62,6 @@ const UploadProfilePicModal = ({ modalTitle }) => {
       />
       <button type="submit">Submit</button>
       {(imageLoading) && <p>Loading...</p>}
-      {errors && <p>{errors}</p>}
     </form>
   </>)
 }

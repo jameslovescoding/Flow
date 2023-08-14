@@ -11,7 +11,6 @@ export function ModalProvider({ children }) {
   const [onModalClose, setOnModalClose] = useState(null);
 
   const closeModal = () => {
-    console.log("OnClick, close modal")
     setModalContent(null); // clear the modal contents
     // If callback function is truthy, call the callback function and reset it
     // to null:
@@ -28,10 +27,6 @@ export function ModalProvider({ children }) {
     setOnModalClose, // function to set the callback function called when modal is closing
     closeModal // function to close the modal
   };
-
-  useEffect(() => {
-    console.log(typeof onModalClose)
-  }, [onModalClose])
 
   return (
     <>
