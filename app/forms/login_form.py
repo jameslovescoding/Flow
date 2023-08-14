@@ -27,19 +27,14 @@ class LoginForm(FlaskForm):
     email = StringField('email', validators=[
         DataRequired(),
         user_exists,
-        Length(min=4, max=255, message='Email should be 4 to 255 long')
     ])
     password = StringField('password', validators=[
         DataRequired(),
         password_matches,
-        Regexp(r'^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])',
-               message='Password must contain at least one digit, lowercase letter, uppercase letter, and special character(@#$%^&+=)')
     ])
-
 
 class PreLoginForm(FlaskForm):
     email = StringField('email', validators=[
         DataRequired(),
         user_exists,
-        Length(min=4, max=255, message='Email should be 4 to 255 long')
     ])

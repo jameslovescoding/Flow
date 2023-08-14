@@ -51,7 +51,7 @@ export const login = (email, password) => async (dispatch) => {
 			return data.errors;
 		}
 	} else {
-		return ["An error occurred. Please try again."];
+		return { "server": "An error occurred. Please try again." };
 	}
 };
 
@@ -93,6 +93,39 @@ export const signUp = (username, email, password) => async (dispatch) => {
 		return ["An error occurred. Please try again."];
 	}
 };
+
+// upload or replace user profile picture
+
+export const uploadProfilePic = (formData, userId) => async (dispatch) => {
+	const response = await fetch(`/api/users/${userId}/profile-pic`, {
+		method: 'PUT',
+		body: formData
+	})
+	if (response.ok) {
+		const updatedUser = await response.json();
+		dispatch(setUser(updatedUser))
+		return null
+	} else {
+		const data = await response.json();
+		return data.errors
+	}
+}
+
+// remove user profile picture
+
+export const removeProfilePic = (userId) => async (dispatch) => {
+	const response = await fetch(`/api/users/${userId}/profile-pic`, {
+		method: 'DELETE'
+	})
+	if (response.ok) {
+		const updatedUser = await response.json();
+		dispatch(setUser(updatedUser))
+		return null
+	} else {
+		const data = await response.json();
+		return data.errors
+	}
+}
 
 export default function reducer(state = initialState, action) {
 	switch (action.type) {
