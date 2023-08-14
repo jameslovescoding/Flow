@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { signUp } from "../../store/session";
@@ -15,6 +15,7 @@ function SignupFormModal() {
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [errors, setErrors] = useState({});
 	const { closeModal, setModalContent } = useModal();
+	const [submitDisable, setSubmitDisable] = useState(true);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -27,13 +28,21 @@ function SignupFormModal() {
 				closeModal();
 			}
 		} else {
-			setErrors({ "confirm_papssword": "Confirm Password field must be the same as the Password field" });
+			setErrors({ "confirm_papssword": "passwords need to match" });
 		}
 	};
 
 	const handleGoToLogin = () => {
 		setModalContent(<LoginFormModal />)
 	}
+
+	const handleLoadDemoData = () => {
+
+	}
+
+	useEffect(() => {
+		setSubmitDisable(email.length < 4 || username.length < 4 || password < 8 || confirmPassword < 8)
+	}, [email, username, password, confirmPassword])
 
 	return (
 		<>
@@ -47,6 +56,7 @@ function SignupFormModal() {
 							type="text"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
+							placeholder={"Please enter your email"}
 							required
 						/>
 					</label>
@@ -59,6 +69,7 @@ function SignupFormModal() {
 							type="text"
 							value={username}
 							onChange={(e) => setUsername(e.target.value)}
+							placeholder={"Please choose your username"}
 							required
 						/>
 					</label>
@@ -71,6 +82,7 @@ function SignupFormModal() {
 							type="password"
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
+							placeholder={"Please set your password"}
 							required
 						/>
 					</label>
@@ -83,12 +95,17 @@ function SignupFormModal() {
 							type="password"
 							value={confirmPassword}
 							onChange={(e) => setConfirmPassword(e.target.value)}
+							placeholder={"Please confirm your password"}
 							required
 						/>
 					</label>
 				</div>
+				<div>
+					<p>Email and Username must be equal or longer than 4 characters.</p>
+					<p>Password must be equal or longer than 8 characters. Containing at least 1 upper case, 1 lower case, 1 number and 1 special characters in "@#$%^&+="</p>
+				</div>
 
-				<button type="submit">Sign Up</button>
+				<button disabled={submitDisable} type="submit">Sign Up</button>
 			</form>
 			<p>Already have an account?</p>
 			<button onClick={handleGoToLogin}>Login</button>

@@ -107,10 +107,12 @@ def update_user_profile_pic(id):
     form = UpdateUserForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if not form.validate_on_submit():
+        print("form validation not passing")
         return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 
     # check if the file is in the form
     if form.data['profile_pic_file'] is None:
+        print("form data not found")
         return {"errors": "profile picture file is required"}, 400
 
     # save the new profile picture to aws s3

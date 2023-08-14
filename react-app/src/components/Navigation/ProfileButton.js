@@ -85,7 +85,7 @@ function ProfileButton({ user }) {
     <div>
       <button className="profile-button" onClick={openMenu}>
         <div className="profile-btn-flex">
-          <i className="profile-btn-menu-icon" class="fa-solid fa-bars"></i>
+          <i className="profile-btn-menu-icon fa-solid fa-bars"></i>
           <div className="profile-btn-round-icon">
             <img src={userIcon} />
           </div>

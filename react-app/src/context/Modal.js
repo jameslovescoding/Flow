@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from 'react';
+import React, { useRef, useState, useContext, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import './Modal.css';
 
@@ -11,12 +11,13 @@ export function ModalProvider({ children }) {
   const [onModalClose, setOnModalClose] = useState(null);
 
   const closeModal = () => {
+    console.log("OnClick, close modal")
     setModalContent(null); // clear the modal contents
     // If callback function is truthy, call the callback function and reset it
     // to null:
     if (typeof onModalClose === 'function') {
-      setOnModalClose(null);
       onModalClose();
+      setOnModalClose(null);
     }
   };
 
@@ -27,6 +28,10 @@ export function ModalProvider({ children }) {
     setOnModalClose, // function to set the callback function called when modal is closing
     closeModal // function to close the modal
   };
+
+  useEffect(() => {
+    console.log(typeof onModalClose)
+  }, [onModalClose])
 
   return (
     <>

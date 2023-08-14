@@ -15,6 +15,7 @@ import ProfileShowPage from "./components/ProfileShowPage";
 import ProfileEditPage from "./components/ProfileEditPage";
 import CollectionPage from "./components/CollectionPage";
 import ActivityPage from "./components/ActivityPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const dispatch = useDispatch();
@@ -31,30 +32,37 @@ function App() {
           <Route exact path="/" >
             <LandingPage />
           </Route>
-          <Route path="/home" >
+          <Route path="/login" >
+            <LoginFormPage />
+          </Route>
+          <Route path="/signup" >
+            <SignupFormPage />
+          </Route>
+          <ProtectedRoute path="/my-home" >
             <HomePage />
-          </Route>
-          <Route path="/song/new" >
+          </ProtectedRoute>
+          <ProtectedRoute path="/song/new" >
             <SongCreatePage />
-          </Route>
-          <Route path="/song/:songId/edit" >
+          </ProtectedRoute>
+          <ProtectedRoute path="/song/:songId/edit" >
             <SongEditPage />
-          </Route>
-          <Route path="/song/:songId" >
+          </ProtectedRoute>
+          <ProtectedRoute path="/song/:songId" >
             <SongShowPage />
-          </Route>
-          <Route path="/profile/edit" >
+          </ProtectedRoute>
+          <ProtectedRoute path="/profile/edit" >
             <ProfileEditPage />
-          </Route>
-          <Route path="/profile" >
+          </ProtectedRoute>
+          <ProtectedRoute path="/profile">
             <ProfileShowPage />
-          </Route>
-          <Route path="/collection" >
+          </ProtectedRoute>
+          <ProtectedRoute path="/collection" >
             <CollectionPage />
-          </Route>
-          <Route path="/activity" >
+          </ProtectedRoute>
+          <ProtectedRoute path="/activity" >
             <ActivityPage />
-          </Route>
+          </ProtectedRoute>
+
         </Switch>
       )}
     </>
