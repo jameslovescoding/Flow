@@ -6,6 +6,16 @@ import LoginFormPage from "./components/LoginFormPage";
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
 
+import LandingPage from "./components/LandingPage";
+import HomePage from "./components/HomePage";
+import SongShowPage from "./components/SongShowPage";
+import SongCreatePage from "./components/SongCreatePage";
+import SongEditPage from "./components/SongEditPage";
+import ProfileShowPage from "./components/ProfileShowPage";
+import ProfileEditPage from "./components/ProfileEditPage";
+import CollectionPage from "./components/CollectionPage";
+import ActivityPage from "./components/ActivityPage";
+
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -18,11 +28,32 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-          <Route path="/login" >
-            <LoginFormPage />
+          <Route exact path="/" >
+            <LandingPage />
           </Route>
-          <Route path="/signup">
-            <SignupFormPage />
+          <Route path="/home" >
+            <HomePage />
+          </Route>
+          <Route path="/song/new" >
+            <SongCreatePage />
+          </Route>
+          <Route path="/song/:songId/edit" >
+            <SongEditPage />
+          </Route>
+          <Route path="/song/:songId" >
+            <SongShowPage />
+          </Route>
+          <Route path="/profile/edit" >
+            <ProfileEditPage />
+          </Route>
+          <Route path="/profile" >
+            <ProfileShowPage />
+          </Route>
+          <Route path="/collection" >
+            <CollectionPage />
+          </Route>
+          <Route path="/activity" >
+            <ActivityPage />
           </Route>
         </Switch>
       )}

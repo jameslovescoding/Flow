@@ -9,8 +9,10 @@ def validation_errors_to_error_messages(validation_errors):
     """
     turns the WTForms validation errors into a dictionary
     """
+    print("incoming errors", validation_errors)
     errorMessages = {}
     for field in validation_errors:
         error_message_concat = '. '.join(validation_errors[field])
         errorMessages[field] = error_message_concat
+    print("return errors", errorMessages)
     return errorMessages
