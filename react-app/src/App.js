@@ -9,10 +9,7 @@ import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
 import HomePage from "./components/HomePage";
 import SongShowPage from "./components/SongShowPage";
-import SongCreatePage from "./components/SongCreatePage";
-import SongEditPage from "./components/SongEditPage";
 import ProfileShowPage from "./components/ProfileShowPage";
-import ProfileEditPage from "./components/ProfileEditPage";
 import CollectionPage from "./components/CollectionPage";
 import ActivityPage from "./components/ActivityPage";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -40,9 +37,6 @@ function App() {
           </Route>
           <ProtectedRoute path="/my-home" >
             <HomePage />
-          </ProtectedRoute>
-          <ProtectedRoute path="/song/:songId/edit" >
-            <SongEditPage />
           </ProtectedRoute>
           <ProtectedRoute path="/song/:songId" >
             <SongShowPage />
