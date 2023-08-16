@@ -13,21 +13,21 @@ class UpdateUserForm(FlaskForm):
 
     first_name = StringField('first_name', validators=[
         Optional(),
-        Length(min=1, max=40, message='Maximum length of first name is 40'),
+        Length(min=0, max=40, message='Maximum length of first name is 40'),
     ])
 
     # Optional items, if exists, shorter than 40 characters
 
     last_name = StringField('last_name', validators=[
         Optional(),
-        Length(min=1, max=40, message='Maximum length of last name is 40'),
+        Length(min=0, max=40, message='Maximum length of last name is 40'),
     ])
 
     # Optional items, if exists, shorter than 255 characters
 
     bio = StringField('bio', validators=[
         Optional(),
-        Length(min=1, max=255, message='Maximum length of bio is 255'),
+        Length(min=0, max=255, message='Maximum length of bio is 255'),
     ])
 
     # Optional items, if exists, shorter than 1024 characters

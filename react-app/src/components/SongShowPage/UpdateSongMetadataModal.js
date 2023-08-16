@@ -1,44 +1,52 @@
 import React, { useEffect, useState } from "react";
 import { useModal } from "../../context/Modal";
 import { useDispatch } from "react-redux";
-import { updateAccountInfo } from "../../store/session";
+import { updateSongMetadata } from "../../store/song";
 
-const UpdateSongMetadataModal = ({ metadata }) => {
+const UpdateSongMetadataModal = ({ metadata, song }) => {
   const dispatch = useDispatch();
   const { closeModal, setModalContent } = useModal();
   const [title, setTitle] = useState(metadata.title);
   const [artist, setArtist] = useState(metadata.artist);
   const [album, setAlbum] = useState(metadata.album);
-  const [description, setDescription] = useState(metadata.description);
-  const [genre, setGenre] = useState(metadata.genre);
-  const [releaseDate, setReleaseDate] = useState(metadata.releaseDate);
+  const [description, setDescription] = useState(metadata.description ? metadata.description : "");
+  const [genre, setGenre] = useState(metadata.genre ? metadata.genre : "");
+  const [release_date, setReleaseDate] = useState(metadata.release_date);
   // disable the submit button
   const [submitDisable, setSubmitDisable] = useState(true);
+  // show errors
   const [errors, setErrors] = useState({});
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newInfo = {
-      "first_name": firstName.length ? firstName : null,
-      "last_name": lastName.length ? lastName : null,
-      "bio": bio.length ? bio : null
-    }
-    const data = await dispatch(updateAccountInfo(newInfo, user.id))
+
+    const newMetadata = {
+      "title": title,
+      "artist": artist,
+      "album": album,
+      "description": description.length ? description : null,
+      "genre": genre.length ? genre : null,
+      "release_date": release_date.length ? release_date : null,
+    };
+
+    console.log("newMetadata", newMetadata);
+    const data = await dispatch(updateSongMetadata(newMetadata, song.id))
     if (data) {
       console.log(data)
       setErrors(data);
     } else {
       closeModal();
     }
-    console.log(newInfo)
   }
 
   const handleCancel = () => {
     closeModal()
   }
 
+  // check form to enable the submit button
   useEffect(() => {
+    // If any of these field is empty, disable the submit button
     setSubmitDisable(!title.length || !artist.length || !album.length)
   }, [title, artist, album])
 
@@ -47,7 +55,7 @@ const UpdateSongMetadataModal = ({ metadata }) => {
     <p>You can update title, artirst, album of your song. You can also add extra Information to the metadata such as description, genre, release date.</p>
     <form onSubmit={handleSubmit}>
       <div>
-        {errors.first_name && <p>Error: {errors.first_name}</p>}
+        {errors.title && <p>Error: {errors.title}</p>}
         <label>
           Title
           <input
@@ -59,7 +67,7 @@ const UpdateSongMetadataModal = ({ metadata }) => {
         </label>
       </div>
       <div>
-        {errors.first_name && <p>Error: {errors.first_name}</p>}
+        {errors.artist && <p>Error: {errors.artist}</p>}
         <label>
           Artist
           <input
@@ -71,7 +79,7 @@ const UpdateSongMetadataModal = ({ metadata }) => {
         </label>
       </div>
       <div>
-        {errors.first_name && <p>Error: {errors.first_name}</p>}
+        {errors.album && <p>Error: {errors.album}</p>}
         <label>
           Album
           <input
@@ -83,7 +91,7 @@ const UpdateSongMetadataModal = ({ metadata }) => {
         </label>
       </div>
       <div>
-        {errors.first_name && <p>Error: {errors.first_name}</p>}
+        {errors.description && <p>Error: {errors.description}</p>}
         <label>
           Description
           <input
@@ -95,7 +103,7 @@ const UpdateSongMetadataModal = ({ metadata }) => {
         </label>
       </div>
       <div>
-        {errors.first_name && <p>Error: {errors.first_name}</p>}
+        {errors.genre && <p>Error: {errors.genre}</p>}
         <label>
           Genre
           <input
@@ -107,16 +115,20 @@ const UpdateSongMetadataModal = ({ metadata }) => {
         </label>
       </div>
       <div>
-        {errors.first_name && <p>Error: {errors.first_name}</p>}
+        {errors.release_date && <p>Error: {errors.release_date}</p>}
         <label>
           Release Date
           <input
             type="date"
-            value={releaseDate}
+            value={release_date}
             onChange={(e) => setReleaseDate(e.target.value)}
-            placeholder={"Please add the release date of this song"}
           />
         </label>
+      </div>
+      <div>
+        <p>Hints:</p>
+        <p>A song must have title, artirst and album info</p>
+        <p>Delete a data by setting it to empty</p>
       </div>
       <button disabled={submitDisable} type="submit">Update</button>
     </form>

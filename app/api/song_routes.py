@@ -92,12 +92,12 @@ def create_new_song():
 
 
 
-# 14 Update a song by id
-# PUT /api/songs/:id
+# 14 Update metadata of a song by id
+# PUT /api/songs/:id/meta
 
-@song_routes.route('/<int:id>', methods=['PUT'])
+@song_routes.route('/<int:id>/meta', methods=['PUT'])
 @login_required
-def update_song_by_id(id):
+def update_song_metadata_by_id(id):
     """
     Updating song's info
     except for song file and thumbnail file
@@ -122,25 +122,55 @@ def update_song_by_id(id):
         return {'errors': "Missing fields to update"}, 400
 
     # update song's data
-    if form.data['title'] is not None:
-        song.title = form.data['title']
-    if form.data['artist'] is not None:
-        song.artist = form.data['artist']
-    if form.data['album'] is not None:
-        song.album = form.data['album']
-    if form.data['genre'] is not None:
-        song.genre = form.data['genre']
-    if form.data['description'] is not None:
-        song.description = form.data['description']
-    if form.data['release_date'] is not None:
-        song.release_date = form.data['release_date']
-    if form.data['lyrics'] is not None:
-        song.lyrics = form.data['lyrics']
+    song.title = form.data['title']
+    song.artist = form.data['artist']
+    song.album = form.data['album']
+    song.genre = form.data['genre']
+    song.description = form.data['description']
+    song.release_date = form.data['release_date']
+
 
     # commit changes
     db.session.commit()
     return song.to_dict()
 
+
+
+# Update lyrics of a song by id
+# PUT /api/songs/:id/lyrics
+
+@song_routes.route('/<int:id>/lyrics', methods=['PUT'])
+@login_required
+def update_song_lyrics_by_id(id):
+    """
+    Updating song's info
+    except for song file and thumbnail file
+    """
+    # check if the song exists
+    song = Song.query.get(id)
+    if song is None:
+        return {"errors": "song not found"}, 404
+
+    # only the owner of the song can update the song
+    if song.uploaded_by_user_id != current_user.id:
+        return {'errors': 'Unauthorized'}, 401
+
+    # use form to validate data
+    form = UpdateSongForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if not form.validate_on_submit():
+        return {'errors': validation_errors_to_error_messages(form.errors)}, 400
+
+    # check if any data passed in
+    if len(form.data) == 0:
+        return {'errors': "Missing fields to update"}, 400
+
+    # update song's data
+    song.lyrics = form.data['lyrics']
+
+    # commit changes
+    db.session.commit()
+    return song.to_dict()
 
 
 # Update a song's audio file on aws s3

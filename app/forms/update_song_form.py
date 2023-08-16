@@ -6,7 +6,10 @@ from wtforms.validators import DataRequired, ValidationError, Length, Regexp, Op
 from wtforms import SubmitField
 from datetime import date
 
+
 def not_future_date(form, field):
+    if field.data is None:
+        return
     if field.data > date.today():
         raise ValidationError('Date cannot be a future date.')
 
@@ -43,12 +46,12 @@ class UpdateSongForm(FlaskForm):
 
     genre = StringField('genre', validators=[
         Optional(),
-        Length(min=1, max=40, message='Genre should be no longer than 40 characters')
+        Length(min=0, max=40, message='Genre should be no longer than 40 characters')
     ])
 
     description = StringField('description', validators=[
         Optional(),
-        Length(min=1, max=255, message='Description should be no longer than 255 characters')
+        Length(min=0, max=255, message='Description should be no longer than 255 characters')
     ])
 
     release_date = DateField('release_date', validators=[
@@ -58,5 +61,5 @@ class UpdateSongForm(FlaskForm):
 
     lyrics = StringField('lyrics',validators=[
         Optional(),
-        Length(min=1, max=2048, message='Lyrics should be no longer than 255 characters')
+        Length(min=0, max=2048, message='Lyrics should be no longer than 255 characters')
     ])

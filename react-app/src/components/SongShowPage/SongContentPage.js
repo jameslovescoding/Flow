@@ -4,6 +4,9 @@ import { Redirect } from "react-router-dom";
 import SongPageOpenModalButton from "./SongPageOpenModalButton";
 import UpdateSongThumbnailModal from "./UpdateSongThumbnailModal";
 import RemoveSongThumbnailModal from "./RemoveSongThumbnailModal";
+import UpdateSongMetadataModal from "./UpdateSongMetadataModal";
+import UpdateSongLyricsModal from "./UpdateSongLyricsModal";
+import ReplaceAudioFileModal from "./ReplaceAudioFileModal";
 
 const SongContentPage = ({ song, user }) => {
   const [editMode, setEditMode] = useState(false);
@@ -14,6 +17,11 @@ const SongContentPage = ({ song, user }) => {
 
   const closeEditMode = () => {
     setEditMode(false)
+  }
+
+  const dateConverter = (yyyymmdd) => {
+    const [year, month, day] = yyyymmdd.split("-")
+    return [month, day, year].join("-")
   }
 
   let thumbnail;
@@ -56,7 +64,19 @@ const SongContentPage = ({ song, user }) => {
       <div>
         {editMode && (<>
           <SongPageOpenModalButton
-            modalComponent={<h1>Update Metadata</h1>}
+            modalComponent={<>
+              <UpdateSongMetadataModal
+                metadata={{
+                  "title": song.title,
+                  "artist": song.artist,
+                  "album": song.album,
+                  "description": song.description,
+                  "genre": song.genre,
+                  "release_date": song.release_date,
+                }}
+                song={song}
+              />
+            </>}
             buttonText={"Update Metadata"}
             onModalClose={closeEditMode}
           />
@@ -68,7 +88,7 @@ const SongContentPage = ({ song, user }) => {
         <p>Album: {song.album}</p>
         <p>Description: {song.description ? song.description : "??"}</p>
         <p>Genre: {song.genre ? song.genre : "??"}</p>
-        <p>Release Date: {song.release_date ? song.release_date : "??"}</p>
+        <p>Release Date: {song.release_date ? dateConverter(song.release_date) : "??"}</p>
       </div>
     </div>
     <div>
@@ -76,7 +96,7 @@ const SongContentPage = ({ song, user }) => {
       <div>
         {editMode && (<>
           <SongPageOpenModalButton
-            modalComponent={<h1>Update Lyrics</h1>}
+            modalComponent={< UpdateSongLyricsModal currentLyrics={song.lyrics} song={song} />}
             buttonText={"Update Lyrics"}
             onModalClose={closeEditMode}
           />
@@ -90,7 +110,7 @@ const SongContentPage = ({ song, user }) => {
       <h2>Audio</h2>
       {editMode && (<>
         <SongPageOpenModalButton
-          modalComponent={<h1>Replace Audio File</h1>}
+          modalComponent={<ReplaceAudioFileModal song={song} />}
           buttonText={"Replace Audio File"}
           onModalClose={closeEditMode}
         />
