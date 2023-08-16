@@ -131,6 +131,26 @@ export const removeProfilePic = (userId) => async (dispatch) => {
 	}
 }
 
+// update user account info
+
+export const updateAccountInfo = (userInfo, userId) => async (dispatch) => {
+	const response = await fetch(`/api/users/${userId}`, {
+		method: 'PUT',
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(userInfo)
+	})
+	if (response.ok) {
+		const updatedUser = await response.json();
+		dispatch(setUser(updatedUser))
+		return null
+	} else {
+		const data = await response.json();
+		return data.errors
+	}
+}
+
 export default function reducer(state = initialState, action) {
 	switch (action.type) {
 		case SET_USER:

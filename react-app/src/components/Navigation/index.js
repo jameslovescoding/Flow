@@ -3,6 +3,9 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import iconSrc from './favicon.png';
+import OpenModalButton from '../OpenModalButton';
+import UploadNewSongModalButton from './UploadNewSongModalButton';
+import SongCreateModal from '../SongCreateModal';
 
 import './Navigation.css';
 
@@ -18,9 +21,17 @@ function Navigation({ isLoaded }) {
 			<div className='right-section'>
 				{isLoaded && (
 					<>
-						{sessionUser &&
-							<NavLink className="create-new-song hover-shadow" to="/song/new"><i className="fa-solid fa-music fa-"></i> Upload</NavLink>
-						}
+						{sessionUser && (<>
+							<UploadNewSongModalButton
+								modalComponent={<SongCreateModal
+									initialValues={{
+										title: "",
+										artist: "",
+										album: "",
+									}} />}
+								buttonText={<><i className="fa-solid fa-music fa-"></i> Upload</>}
+							/>
+						</>)}
 						<ProfileButton user={sessionUser} />
 					</>
 				)}

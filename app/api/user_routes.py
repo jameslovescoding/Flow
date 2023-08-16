@@ -113,9 +113,9 @@ def update_user_profile_pic(id):
     # check if the file is in the form
     if form.data['profile_pic_file'] is None:
         print("form data not found")
-        return {"errors": "profile picture file is required"}, 400
+        return {"errors": {"missing files": "profile picture file is required"} }, 400
 
-    # save the new profile picture to aws s3
+    # get the file
     profile_pic = form.data['profile_pic_file']
 
     # we upload file and use new uuid name eveytime
@@ -123,20 +123,21 @@ def update_user_profile_pic(id):
     profile_pic.filename = get_unique_filename(profile_pic.filename)
     upload_pic = upload_file_to_s3(profile_pic)
 
-    previous_filename = user.profile_pic_url
-    remove_file_from_s3(previous_filename)
-
     print(upload_pic)
 
     # check result
     if "url" not in upload_pic:
-        return {'errors': "Failed to upload your profile picture"}, 500
+        return {'errors': {"Upload Failed": "Failed to upload your profile picture"}}, 500
 
-    # save the url to the user
+    # then, we delete the old one on aws s3, if there's any
+    if user.profile_pic_url is not None:
+        remove_file_from_s3(user.profile_pic_url)
+
+    # save the url to the user and commit changes
     user.profile_pic_url = upload_pic["url"]
-
-    # commit changes and return the updated user
     db.session.commit()
+
+    # return the updated user
     return user.to_dict()
 
 
@@ -163,7 +164,7 @@ def delete_user_profile_pic(id):
     # if the user doesn't have profile picture, return error
     profile_pic_url_old = user.profile_pic_url
     if profile_pic_url_old is None:
-        return {"errors": "The user does not have a profile picture"}, 400
+        return {"errors": {"Bad Request": "The user does not have a profile picture"}}, 400
 
     # delete the profile picture from aws s3
     batch_remove_from_s3("profile picture", [profile_pic_url_old])

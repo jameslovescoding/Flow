@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect, useHistory } from "react-router-dom";
 import { useModal } from "../../context/Modal";
-import { removeProfilePic } from "../../store/session";
 
-const CustomCompleteModal = ({ modalTitle, completeText, returnText, seconds }) => {
+
+const CustomCompleteModal = ({ modalTitle, modalText, actionText, seconds, redirectCallBack }) => {
   const { closeModal } = useModal();
   const [secondsLeft, setSecondsLeft] = useState(seconds);
 
   const handleDismiss = () => {
+    if (redirectCallBack) {
+      redirectCallBack();
+    }
     closeModal();
   }
 
@@ -20,15 +21,17 @@ const CustomCompleteModal = ({ modalTitle, completeText, returnText, seconds }) 
       }, 1000);
       return () => clearTimeout(timer);
     } else {
+      if (redirectCallBack) {
+        redirectCallBack();
+      }
       closeModal();
     }
   }, [secondsLeft])
 
-
   return (<>
     <h1>{modalTitle}</h1>
-    <p>{completeText}</p>
-    <p>Returning to {returnText} in {secondsLeft}s</p>
+    <p>{modalText}</p>
+    <p>{actionText} in {secondsLeft}s</p>
     <button onClick={handleDismiss}>Dismiss</button>
   </>)
 }

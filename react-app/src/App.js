@@ -41,17 +41,11 @@ function App() {
           <ProtectedRoute path="/my-home" >
             <HomePage />
           </ProtectedRoute>
-          <ProtectedRoute path="/song/new" >
-            <SongCreatePage />
-          </ProtectedRoute>
           <ProtectedRoute path="/song/:songId/edit" >
             <SongEditPage />
           </ProtectedRoute>
           <ProtectedRoute path="/song/:songId" >
             <SongShowPage />
-          </ProtectedRoute>
-          <ProtectedRoute path="/profile/edit" >
-            <ProfileEditPage />
           </ProtectedRoute>
           <ProtectedRoute path="/profile">
             <ProfileShowPage />
