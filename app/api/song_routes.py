@@ -55,11 +55,13 @@ def create_new_song():
     """
     # use CreateSongForm to validate data
     form = CreateSongForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
     if not form.validate_on_submit():
         return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 
     # upload song
     song_file = form.data["song_file"]
+    print("dir song_file", dir(song_file))
 
     # save the original filename
     original_filename = song_file.filename
@@ -72,7 +74,7 @@ def create_new_song():
 
     # check result
     if "url" not in upload_song:
-        return {"errors": f"Failed to upload song file with url {original_filename}"}, 500
+        return {"errors": {"Upload Failed": "Failed to upload song audio file"}}, 500
 
     # create new song in our database if there's no error
     new_song = Song(
@@ -111,6 +113,7 @@ def update_song_by_id(id):
 
     # use form to validate data
     form = UpdateSongForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
     if not form.validate_on_submit():
         return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 
@@ -160,12 +163,13 @@ def update_song_audio_file(id):
 
     # use form to validate data
     form = UpdateSongForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
     if not form.validate_on_submit():
         return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 
     # check if song audio file exists in the form
     if form.data['song_file'] is None:
-        return {'errors': "song audio file is required"}, 400
+        return {'errors': {"missing files": "song audio file is required"}}, 400
 
     # create unique filename and save it to aws s3
     song_file = form.data["song_file"]
@@ -173,18 +177,16 @@ def update_song_audio_file(id):
     # remember original filename
     original_filename = song_file.filename
 
-    # we use previously generated name if it exists
-    if song.s3_key is None:
-        song_file.filename = get_unique_filename(song_file.filename)
-    else:
-        song_file.filename = song.s3_key
-
-    # aws will overwrite old file with new one if they have same filename
+    # we get a new file name and upload to aws s3
+    song_file.filename = get_unique_filename(song_file.filename)
     upload_song = upload_file_to_s3(song_file)
 
     # check result
     if "url" not in upload_song:
-        return {"errors": f"Failed to upload song audio file with url {original_filename}"}, 500
+        return {"errors": {"Upload Failed": "Failed to upload your song file"}}, 500
+
+    # then, we delete previous song from aws s3
+    remove_file_from_s3(song.s3_key)
 
     # commit changes
     song.s3_key = upload_song["url"]
@@ -218,31 +220,32 @@ def update_song_thumbnail_file(id):
 
     # use form to validate data
     form = UpdateSongForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
     if not form.validate_on_submit():
         return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 
     # check if song audio file exists in the form
     if form.data['thumbnail_file'] is None:
-        return {'errors': "song thumbnail file is required"}, 400
+        return {'errors': {"missing files": "thumbnail file is required"}}, 400
 
-    # create unique filename and save it to aws s3
+    # get the file
     thumbnail_file = form.data["thumbnail_file"]
 
     # remember original filename
     original_filename = thumbnail_file.filename
 
-    # we use previously generated name if it exists
-    if song.thumbnail_url is None:
-        thumbnail_file.filename = get_unique_filename(thumbnail_file.filename)
-    else:
-        thumbnail_file.filename = song.thumbnail_url
-
-    # aws will overwrite old file with new one if they have same filename
+    # first, we upload and get a new file name
+    thumbnail_file.filename = get_unique_filename(thumbnail_file.filename)
     upload_thumbnail = upload_file_to_s3(thumbnail_file)
 
-    # check result
+    # check upload result
     if "url" not in upload_thumbnail:
-        return {"errors": f"Failed to upload song thumbnail file with url {original_filename}"}, 500
+        return {"errors": {"Upload Failed": "Failed to upload your thumbnail file"} }, 500
+
+    # then, we delete the old one on aws s3, if there's any
+    if song.thumbnail_url is not None:
+        remove_file_from_s3(song.thumbnail_url)
+
 
     # commit changes
     song.thumbnail_url = upload_thumbnail["url"]
@@ -250,6 +253,11 @@ def update_song_thumbnail_file(id):
 
     # return updated song
     return song.to_dict()
+
+
+
+# Remove a song's thumbnail file on aws s3
+# DELETE /api/songs/:id/thumbnail
 
 @song_routes.route('/<int:id>/thumbnail', methods=['DELETE'])
 @login_required
@@ -264,14 +272,14 @@ def delete_song_thumbnail_file(id):
 
     # check if the song has a thumbnail
     if song.thumbnail_url is None:
-        return {"errors": f"Song with id {id} does not have thumbnail"}, 400
+        return {"errors": {"Bad Request": "This song does not have thumbnail"}}, 400
 
     # remove the thumbnail from awss3
     delete_file = remove_file_from_s3(song.thumbnail_url)
 
     # check result
     if delete_file is not True:
-        return {"errors": f"Failed to remove thumbnail, {delete_file.errors}"}, 500
+        return {"errors": {"Delete Failed":f"{delete_file.errors}"}}, 500
 
     # save changes and commit
     song.thumbnail_url = None
@@ -329,6 +337,7 @@ def create_comment_by_song_id(id):
 
     # use form to validate the comment data
     form = CommentForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
     if not form.validate_on_submit():
         return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 

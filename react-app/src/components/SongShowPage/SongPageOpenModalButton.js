@@ -2,7 +2,7 @@
 import React from 'react';
 import { useModal } from '../../context/Modal';
 
-function ProfilePageOpenModalButton({
+function SongPageOpenModalButton({
   modalComponent, // component to render inside the modal
   buttonText, // text of the menu item that opens the modal
   onButtonClick, // optional: callback function that will be called once the menu item that opens the modal is clicked
@@ -26,4 +26,4 @@ function ProfilePageOpenModalButton({
   );
 }
 
-export default ProfilePageOpenModalButton;
+export default SongPageOpenModalButton;

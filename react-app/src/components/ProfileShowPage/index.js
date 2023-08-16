@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
 import ProfilePageOpenModalButton from "./ProfilePageOpenModalButton"
 import UploadProfilePicModal from "./UploadProfilePicModal";
 import RemoveProfilePicModal from "./RemoveProfilePicModal";
+import UpdateAccountInfoModal from "./UpdateAccountInfoModal";
 
 const ProfileShowPage = () => {
   const user = useSelector(state => state.session.user);
@@ -14,9 +14,7 @@ const ProfileShowPage = () => {
   }
 
   const closeEditMode = () => {
-    console.log("close edit mode triggered")
     setEditMode(false)
-    return "the close edit mode callback function got runned"
   }
 
   let userIcon;
@@ -59,17 +57,17 @@ const ProfileShowPage = () => {
         </div>
       </div>
       <div>
-        <h2>Your Account Info</h2>
+        <h2>Your Account Information</h2>
         {editMode && (<>
           <ProfilePageOpenModalButton
-            modalComponent={<h1>Edit Account Form</h1>}
-            buttonText="Update Account Info"
+            modalComponent={<UpdateAccountInfoModal user={user} />}
+            buttonText="Update Account Information"
             onModalClose={closeEditMode}
           />
         </>)}
         <p>User Name: {user.username}</p>
         <p>Registered Email: {user.email}</p>
-        <p>Full Name: {user.firstname ? user.firstname : "??"} {user.lastname ? user.lastname : "??"}</p>
+        <p>Full Name: {user.first_name ? user.first_name : "??"} {user.last_name ? user.last_name : "??"}</p>
         <p>Bio: {user.bio ? user.bio : "??"}</p>
       </div>
     </div>

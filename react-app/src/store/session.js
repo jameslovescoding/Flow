@@ -103,10 +103,12 @@ export const uploadProfilePic = (formData, userId) => async (dispatch) => {
 	})
 	if (response.ok) {
 		const updatedUser = await response.json();
+		// console.log(`PUT /api/users/${userId}/profile-pic`, "response.ok", updatedUser)
 		dispatch(setUser(updatedUser))
 		return null
 	} else {
 		const data = await response.json();
+		// console.log(`PUT /api/users/${userId}/profile-pic`, "errors", data.errors)
 		return data.errors
 	}
 }
@@ -116,6 +118,28 @@ export const uploadProfilePic = (formData, userId) => async (dispatch) => {
 export const removeProfilePic = (userId) => async (dispatch) => {
 	const response = await fetch(`/api/users/${userId}/profile-pic`, {
 		method: 'DELETE'
+	})
+	if (response.ok) {
+		const updatedUser = await response.json();
+		// console.log(`DELETE /api/users/${userId}/profile-pic`, "response.ok", updatedUser)
+		dispatch(setUser(updatedUser))
+		return null
+	} else {
+		const data = await response.json();
+		// console.log(`DELETE /api/users/${userId}/profile-pic`, "errors", data.errors)
+		return data.errors
+	}
+}
+
+// update user account info
+
+export const updateAccountInfo = (userInfo, userId) => async (dispatch) => {
+	const response = await fetch(`/api/users/${userId}`, {
+		method: 'PUT',
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(userInfo)
 	})
 	if (response.ok) {
 		const updatedUser = await response.json();

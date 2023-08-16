@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
 import { useModal } from "../../context/Modal";
-import { uploadProfilePic } from "../../store/session";
+import { uploadNewThumbnail } from "../../store/song";
 import CustomCompleteModal from "../CustomCompleteModal";
 import CustomErrorModal from "../CustomErrorModal";
 
-const UploadProfilePicModal = ({ modalTitle }) => {
+const UpdateSongThumbnailModal = ({ song, modalTitle }) => {
   const history = useHistory(); // so that you can redirect after the image upload is successful
   const dispatch = useDispatch();
   const [image, setImage] = useState(null);
-  const [imageLoading, setImageLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { closeModal, setModalContent } = useModal();
   const sessionUser = useSelector(state => state.session.user);
   const [errors, setErrors] = useState(null);
@@ -18,27 +18,27 @@ const UploadProfilePicModal = ({ modalTitle }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("profile_pic_file", image);
+    formData.append("thumbnail_file", image);
 
     // aws uploads can be a bit slow—displaying
     // some sort of loading message is a good idea
-    setImageLoading(true);
-    const resErrors = await dispatch(uploadProfilePic(formData, sessionUser.id));
+    setIsLoading(true);
+    const resErrors = await dispatch(uploadNewThumbnail(formData, song.id));
     if (resErrors) {
-      setImageLoading(false)
+      setIsLoading(false)
 
       const allErrors = Object.values(resErrors).join(". ");
 
       setModalContent(<CustomErrorModal
         modalTitle={"Errors"}
         errorMessage={allErrors}
-        newModalContent={<UploadProfilePicModal modalTitle={modalTitle} />}
+        newModalContent={<UpdateSongThumbnailModal song={song} modalTitle={modalTitle} />}
       />)
     } else {
       setModalContent(<CustomCompleteModal
         modalTitle={"Upload Successful"}
-        modalText={"You profile picture has been successfully uploaded!"}
-        actionText={"Return to your profile page"}
+        modalText={"The thumbnail picture has been successfully uploaded!"}
+        actionText={"Return to current song page"}
         seconds={4}
       />)
     }
@@ -67,10 +67,10 @@ const UploadProfilePicModal = ({ modalTitle }) => {
       </div>
       <p>Please provide image files with the following extensions: .pdf, .png, .jpg, .jpeg, gif</p>
       <button type="submit">Submit</button>
-      {(imageLoading) && <p>Loading...</p>}
+      {(isLoading) && <p>Loading...</p>}
     </form>
     <button onClick={handleCancel}>Cancel</button>
   </>)
 }
 
-export default UploadProfilePicModal
+export default UpdateSongThumbnailModal
