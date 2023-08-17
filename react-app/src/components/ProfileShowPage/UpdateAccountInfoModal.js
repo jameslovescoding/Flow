@@ -8,7 +8,7 @@ const UpdateAccountInfoModal = ({ user }) => {
   const [firstName, setFirstName] = useState(user.first_name ? user.first_name : "");
   const [lastName, setLastName] = useState(user.last_name ? user.last_name : "");
   const [bio, setBio] = useState(user.bio ? user.bio : "");
-  const [submitDisable, setSubmitDisable] = useState(true);
+  //const [submitDisable, setSubmitDisable] = useState(true);
   const [errors, setErrors] = useState({});
   const { closeModal, setModalContent } = useModal();
 
@@ -33,9 +33,9 @@ const UpdateAccountInfoModal = ({ user }) => {
     closeModal()
   }
 
-  useEffect(() => {
-    setSubmitDisable(!firstName.length && !lastName.length && !bio.length)
-  }, [firstName, lastName, bio])
+  // useEffect(() => {
+  //   setSubmitDisable(!firstName.length && !lastName.length && !bio.length)
+  // }, [firstName, lastName, bio])
 
   return (<>
     <h1>Update Account Information</h1>
@@ -77,7 +77,7 @@ const UpdateAccountInfoModal = ({ user }) => {
           />
         </label>
       </div>
-      <button disabled={submitDisable} type="submit">Update</button>
+      <button type="submit">Update</button>
     </form>
     <button onClick={handleCancel}>Cancel</button>
   </>)

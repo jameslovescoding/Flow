@@ -20,7 +20,6 @@ function SongCreateModal({ initialValues }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("submit button triggerd")
     const formData = new FormData();
     formData.append("song_file", audio);
     formData.append("title", title);

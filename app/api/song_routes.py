@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, redirect, url_for, request
 from flask_login import login_required, current_user
 from app.models import User, db, Song, Comment
+from sqlalchemy.orm import joinedload, subqueryload
+
 
 from app.forms import (
     validation_errors_to_error_messages,
@@ -35,10 +37,16 @@ def get_all_songs():
 @song_routes.route('/<int:id>')
 @login_required
 def get_song_by_id(id):
-    song = Song.query.get(id)
+    song = Song.query.options(
+        joinedload(Song.user_comments),
+        joinedload(Song.liked_users)
+        ).get(id)
     if song is None:
         return {'errors': f'song with id {id} does not exist'}, 404
-    return song.to_dict()
+    res = song.to_dict()
+    res["all_comments"] = [comment.to_dict() for comment in song.user_comments]
+    res["liked_count"] = len(song.liked_users)
+    return res
 
 
 
@@ -92,12 +100,57 @@ def create_new_song():
 
 
 
-# 14 Update a song by id
-# PUT /api/songs/:id
+# 14 Update metadata of a song by id
+# PUT /api/songs/:id/meta
 
-@song_routes.route('/<int:id>', methods=['PUT'])
+@song_routes.route('/<int:id>/meta', methods=['PUT'])
 @login_required
-def update_song_by_id(id):
+def update_song_metadata_by_id(id):
+    """
+    Updating song's info
+    except for song file and thumbnail file
+    """
+    # check if the song exists
+    song = Song.query.get(id)
+    if song is None:
+        return {"errors": "song not found"}, 404
+
+    # only the owner of the song can update the song
+    if song.uploaded_by_user_id != current_user.id:
+        return {'errors': 'Unauthorized'}, 401
+
+    # use form to validate data
+    form = UpdateSongForm()
+    print("form data",form.data)
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if not form.validate_on_submit():
+        return {'errors': validation_errors_to_error_messages(form.errors)}, 400
+
+    # check if any data passed in
+    if len(form.data) == 0:
+        return {'errors': "Missing fields to update"}, 400
+
+    # update song's data
+    song.title = form.data['title']
+    song.artist = form.data['artist']
+    song.album = form.data['album']
+    song.genre = form.data['genre']
+    song.description = form.data['description']
+    song.release_date = form.data['release_date']
+
+
+    # commit changes
+    db.session.commit()
+    return song.to_dict()
+
+
+
+# Update lyrics of a song by id
+# PUT /api/songs/:id/lyrics
+
+@song_routes.route('/<int:id>/lyrics', methods=['PUT'])
+@login_required
+def update_song_lyrics_by_id(id):
     """
     Updating song's info
     except for song file and thumbnail file
@@ -122,25 +175,11 @@ def update_song_by_id(id):
         return {'errors': "Missing fields to update"}, 400
 
     # update song's data
-    if form.data['title'] is not None:
-        song.title = form.data['title']
-    if form.data['artist'] is not None:
-        song.artist = form.data['artist']
-    if form.data['album'] is not None:
-        song.album = form.data['album']
-    if form.data['genre'] is not None:
-        song.genre = form.data['genre']
-    if form.data['description'] is not None:
-        song.description = form.data['description']
-    if form.data['release_date'] is not None:
-        song.release_date = form.data['release_date']
-    if form.data['lyrics'] is not None:
-        song.lyrics = form.data['lyrics']
+    song.lyrics = form.data['lyrics']
 
     # commit changes
     db.session.commit()
     return song.to_dict()
-
 
 
 # Update a song's audio file on aws s3
@@ -307,8 +346,10 @@ def delete_song_by_id(id):
         return {'errors': 'Unauthorized'}, 401
 
     # delete song audio and thumbnail
-    batch_remove_from_s3("song audio file", [song.s3_key])
-    batch_remove_from_s3("song thumbnail file", [song.thumbnail_url])
+    if song.s3_key is not None:
+        batch_remove_from_s3("song audio file", [song.s3_key])
+    if song.thumbnail_url is not None:
+        batch_remove_from_s3("song thumbnail file", [song.thumbnail_url])
 
     # delete the song from our database and commit
     db.session.delete(song)
@@ -316,6 +357,26 @@ def delete_song_by_id(id):
 
     # send message
     return {"message": "Successfully delete song"}
+
+
+
+
+# Get all comments for a song by song id
+# GET /api/songs/:id/comments
+
+@song_routes.route('/<int:id>/comments')
+@login_required
+def get_all_comments_by_song_id(id):
+    """
+    get all comments of a song by song id
+    """
+    # check if the song exists
+    song = Song.query.get(id)
+    if song is None:
+        return {"errors": "song not found"}, 404
+    res_dict = {"all_comments": [comment.to_dict() for comment in song.user_comments]}
+    print(res_dict)
+    return res_dict
 
 
 
@@ -351,7 +412,9 @@ def create_comment_by_song_id(id):
     db.session.commit()
 
     # return the comment
-    return new_comment.to_dict()
+    res_dict = new_comment.to_dict()
+    print(res_dict)
+    return res_dict
 
 
 

@@ -71,12 +71,9 @@ def update_user(id):
         return {'errors': "Missing fields to update"}, 400
 
     # update
-    if form.data['first_name'] is not None:
-        user.first_name = form.data['first_name']
-    if form.data['last_name'] is not None:
-        user.last_name = form.data['last_name']
-    if form.data['bio'] is not None:
-        user.bio = form.data['bio']
+    user.first_name = form.data['first_name']
+    user.last_name = form.data['last_name']
+    user.bio = form.data['bio']
 
     # commit changes and return the updated user
     db.session.commit()

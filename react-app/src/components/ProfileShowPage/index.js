@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ProfilePageOpenModalButton from "./ProfilePageOpenModalButton"
 import UploadProfilePicModal from "./UploadProfilePicModal";
 import RemoveProfilePicModal from "./RemoveProfilePicModal";
 import UpdateAccountInfoModal from "./UpdateAccountInfoModal";
+import OpenModalButton from "../OpenModalButton";
+import "./ProfilePage.css";
 
 const ProfileShowPage = () => {
   const user = useSelector(state => state.session.user);
@@ -33,42 +34,44 @@ const ProfileShowPage = () => {
   const modalTitle = isUsingDefaultUserIcon ? "Upload Your Own Profile Picture" : "Replace Current Profile Picture"
 
   return (<>
-    <h1>Profile Page</h1>
-    <button onClick={handleToggleEditMode}>{editButtonTitle}</button>
-    <div>
+    <div className="page-container-narrow">
+      <h1>Profile Page</h1>
+      <button onClick={handleToggleEditMode}>{editButtonTitle}</button>
       <div>
-        <h2>Your Profile Picture</h2>
-        {editMode && (<>
-          <ProfilePageOpenModalButton
-            modalComponent={<UploadProfilePicModal modalTitle={modalTitle} />}
-            buttonText={modalTitle}
-            onModalClose={closeEditMode}
-          />
-          <ProfilePageOpenModalButton
-            modalComponent={<RemoveProfilePicModal />}
-            buttonText="Remove Current Profile Picture"
-            onModalClose={closeEditMode}
-            buttonDisable={isUsingDefaultUserIcon}
-          />
-        </>)}
         <div>
-          <img src={userIcon} />
-          {isUsingDefaultUserIcon && <p>This is default our profile picture. Upload your own in edit mode.</p>}
+          <h2>Your Profile Picture</h2>
+          {editMode && (<>
+            <OpenModalButton
+              modalComponent={<UploadProfilePicModal modalTitle={modalTitle} />}
+              buttonText={modalTitle}
+              onModalClose={closeEditMode}
+            />
+            <OpenModalButton
+              modalComponent={<RemoveProfilePicModal />}
+              buttonText="Remove Current Profile Picture"
+              onModalClose={closeEditMode}
+              buttonDisable={isUsingDefaultUserIcon}
+            />
+          </>)}
+          <div className="user-icon-container-large">
+            <img className="user-icon-img" src={userIcon} alt="user icon" />
+          </div>
+          {isUsingDefaultUserIcon && <p>(This is default our profile picture. Upload your own in edit mode.)</p>}
         </div>
-      </div>
-      <div>
-        <h2>Your Account Information</h2>
-        {editMode && (<>
-          <ProfilePageOpenModalButton
-            modalComponent={<UpdateAccountInfoModal user={user} />}
-            buttonText="Update Account Information"
-            onModalClose={closeEditMode}
-          />
-        </>)}
-        <p>User Name: {user.username}</p>
-        <p>Registered Email: {user.email}</p>
-        <p>Full Name: {user.first_name ? user.first_name : "??"} {user.last_name ? user.last_name : "??"}</p>
-        <p>Bio: {user.bio ? user.bio : "??"}</p>
+        <div>
+          <h2>Your Account Information</h2>
+          {editMode && (<>
+            <OpenModalButton
+              modalComponent={<UpdateAccountInfoModal user={user} />}
+              buttonText="Update Account Information"
+              onModalClose={closeEditMode}
+            />
+          </>)}
+          <p>User Name: {user.username}</p>
+          <p>Registered Email: {user.email}</p>
+          <p>Full Name: {user.first_name ? user.first_name : "??"} {user.last_name ? user.last_name : "??"}</p>
+          <p>Bio: {user.bio ? user.bio : "??"}</p>
+        </div>
       </div>
     </div>
   </>)
