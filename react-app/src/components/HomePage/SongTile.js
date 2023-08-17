@@ -20,8 +20,8 @@ const SongTile = ({ song }) => {
 
   return (<>
     <div onClick={handleGoToSongContent}>
-      <div>
-        <img src={thumbnail} alt={"song thumbnail"} />
+      <div className="song-thumbnail-container-tile">
+        <img className="song-thumbnail-img" src={thumbnail} alt={"song thumbnail"} />
       </div>
       <div>
         <p><i className="fa-solid fa-music"></i> {song.title}</p>

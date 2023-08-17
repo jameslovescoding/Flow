@@ -44,7 +44,7 @@ const PostCommentForm = ({ song, user }) => {
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
           placeholder="Leave your comment here"
-          maxlength={255}
+          maxLength={255}
         />
         <p>{counter} / 255</p>
         <button disabled={submitDisable} type="submit">Send</button>

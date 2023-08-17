@@ -28,13 +28,13 @@ const CommentTile = ({ comment }) => {
   } else {
     userIcon = user.profile_pic_url;
   }
-  const commentEdited = comment.created_at != comment.updated_at;
+  const commentEdited = comment.created_at !== comment.updated_at;
   const showEditModeButton = comment.user_id === sessionUser.id;
 
   return (<>
 
-    <div>
-      <img src={userIcon} alt="user icon" />
+    <div className="user-icon-container-small">
+      <img className="user-icon-img" src={userIcon} alt="user icon" />
     </div>
     <div>
       <p><i className="fa-solid fa-user"></i> {user.username}</p>

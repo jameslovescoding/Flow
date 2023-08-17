@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 import { getAllComments } from "../../store/comment";
 import CommentList from "../CommentList";
 
-const SongCommentSection = ({ song, user }) => {
+const ShowCommentSection = ({ song, user }) => {
   const dispatch = useDispatch();
   const [loadStatus, setLoadStatus] = useState("loading");
   const allComments = useSelector(state => state.comment.allComments);
@@ -24,6 +24,8 @@ const SongCommentSection = ({ song, user }) => {
     console.log(allComments)
   }, [allComments])
 
+
+
   return (<>
     <h2>All Comments</h2>
     {loadStatus === "error" && <p>An error occurred</p>}
@@ -31,4 +33,4 @@ const SongCommentSection = ({ song, user }) => {
   </>)
 }
 
-export default SongCommentSection;
+export default ShowCommentSection;

@@ -11,7 +11,7 @@ import {
 } from "../SongEditModals";
 import OpenModalButton from "../OpenModalButton";
 import PostCommentForm from "./PostCommentForm";
-import SongCommentSection from "./SongCommentSection";
+import ShowCommentSection from "./ShowCommentSection";
 
 const SongContentPage = ({ song, user }) => {
   const [editMode, setEditMode] = useState(false);
@@ -41,7 +41,7 @@ const SongContentPage = ({ song, user }) => {
   const enableEditMode = user.id === song.uploaded_by_user_id;
   const thumbnailEditModalTitle = isUsingDefaultThumbnail ? "Upload Thumbnail For This Song" : "Replace Thumbnail Fo This Song";
 
-  return (<>
+  return (<div className="page-container-wide">
     <h1>{song.title}</h1>
     {enableEditMode && <button onClick={handleToggleEditMode}>{editButtonTitle}</button>}
     <div>
@@ -59,10 +59,10 @@ const SongContentPage = ({ song, user }) => {
           buttonDisable={isUsingDefaultThumbnail}
         />
       </>)}
-      <div>
-        <img src={thumbnail} alt={"song thumbnail"} />
-        {isUsingDefaultThumbnail && <p>(This is our default thumbnail placeholder. Upload your own thumbnail for your song in edit mode.)</p>}
+      <div className="song-thumbnail-container-large">
+        <img className="song-thumbnail-img" src={thumbnail} alt={"song thumbnail"} />
       </div>
+      {isUsingDefaultThumbnail && <p>(This is our default thumbnail placeholder. Upload your own thumbnail for your song in edit mode.)</p>}
     </div>
     <div>
       <h2>Metadata</h2>
@@ -139,9 +139,9 @@ const SongContentPage = ({ song, user }) => {
     </>)}
     <div>
       <PostCommentForm song={song} user={user} />
-      <SongCommentSection song={song} user={user} />
+      <ShowCommentSection song={song} user={user} />
     </div>
-  </>)
+  </div>)
 }
 
 export default SongContentPage;

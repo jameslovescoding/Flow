@@ -60,3 +60,59 @@ button,
     -5px -5px 15px rgba(0, 0, 0, 0.2),
     5px 5px 20px rgba(0, 0, 0, 0.3);
 }
+
+/* page width */
+
+.page-container-narrow {
+  max-width: 600px;
+  margin: auto;
+}
+
+.page-container-wide {
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* user icon */
+
+.user-icon-container-large {
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.user-icon-container-small {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.user-icon-img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* song thumbnail */
+
+.song-thumbnail-container-tile {
+  height: 200px;
+  width: 200px;
+  border-radius: 20%;
+  overflow: hidden;
+}
+
+.song-thumbnail-container-large {
+  height: 300px;
+  width: 300px;
+  border-radius: 20%;
+  overflow: hidden;
+}
+
+.song-thumbnail-img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
