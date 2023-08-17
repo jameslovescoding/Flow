@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ProfilePageOpenModalButton from "./ProfilePageOpenModalButton"
 import UploadProfilePicModal from "./UploadProfilePicModal";
 import RemoveProfilePicModal from "./RemoveProfilePicModal";
 import UpdateAccountInfoModal from "./UpdateAccountInfoModal";
+import OpenModalButton from "../OpenModalButton";
 
 const ProfileShowPage = () => {
   const user = useSelector(state => state.session.user);
@@ -39,12 +39,12 @@ const ProfileShowPage = () => {
       <div>
         <h2>Your Profile Picture</h2>
         {editMode && (<>
-          <ProfilePageOpenModalButton
+          <OpenModalButton
             modalComponent={<UploadProfilePicModal modalTitle={modalTitle} />}
             buttonText={modalTitle}
             onModalClose={closeEditMode}
           />
-          <ProfilePageOpenModalButton
+          <OpenModalButton
             modalComponent={<RemoveProfilePicModal />}
             buttonText="Remove Current Profile Picture"
             onModalClose={closeEditMode}
@@ -52,14 +52,14 @@ const ProfileShowPage = () => {
           />
         </>)}
         <div>
-          <img src={userIcon} />
+          <img src={userIcon} alt="user icon" />
           {isUsingDefaultUserIcon && <p>This is default our profile picture. Upload your own in edit mode.</p>}
         </div>
       </div>
       <div>
         <h2>Your Account Information</h2>
         {editMode && (<>
-          <ProfilePageOpenModalButton
+          <OpenModalButton
             modalComponent={<UpdateAccountInfoModal user={user} />}
             buttonText="Update Account Information"
             onModalClose={closeEditMode}

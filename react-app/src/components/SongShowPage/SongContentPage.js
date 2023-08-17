@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
-import SongPageOpenModalButton from "./SongPageOpenModalButton";
-import UpdateSongThumbnailModal from "./UpdateSongThumbnailModal";
-import RemoveSongThumbnailModal from "./RemoveSongThumbnailModal";
-import UpdateSongMetadataModal from "./UpdateSongMetadataModal";
-import UpdateSongLyricsModal from "./UpdateSongLyricsModal";
-import ReplaceAudioFileModal from "./ReplaceAudioFileModal";
+import {
+  UpdateSongLyricsModal,
+  UpdateSongMetadataModal,
+  UpdateSongThumbnailModal,
+  ReplaceAudioFileModal,
+  RemoveSongThumbnailModal,
+  DeleteSongConfirmModal,
+} from "../SongEditModals";
+import OpenModalButton from "../OpenModalButton";
+import PostCommentForm from "./PostCommentForm";
+import SongCommentSection from "./SongCommentSection";
 
 const SongContentPage = ({ song, user }) => {
   const [editMode, setEditMode] = useState(false);
@@ -42,12 +47,12 @@ const SongContentPage = ({ song, user }) => {
     <div>
       <h2>Thumbnail</h2>
       {editMode && (<>
-        <SongPageOpenModalButton
+        <OpenModalButton
           modalComponent={<UpdateSongThumbnailModal song={song} modalTitle={thumbnailEditModalTitle} />}
           buttonText={thumbnailEditModalTitle}
           onModalClose={closeEditMode}
         />
-        <SongPageOpenModalButton
+        <OpenModalButton
           modalComponent={<RemoveSongThumbnailModal song={song} />}
           buttonText="Remove Current Thumbnail"
           onModalClose={closeEditMode}
@@ -63,7 +68,7 @@ const SongContentPage = ({ song, user }) => {
       <h2>Metadata</h2>
       <div>
         {editMode && (<>
-          <SongPageOpenModalButton
+          <OpenModalButton
             modalComponent={<>
               <UpdateSongMetadataModal
                 metadata={{
@@ -95,7 +100,7 @@ const SongContentPage = ({ song, user }) => {
       <h2>Lyrics</h2>
       <div>
         {editMode && (<>
-          <SongPageOpenModalButton
+          <OpenModalButton
             modalComponent={< UpdateSongLyricsModal currentLyrics={song.lyrics} song={song} />}
             buttonText={"Update Lyrics"}
             onModalClose={closeEditMode}
@@ -109,7 +114,7 @@ const SongContentPage = ({ song, user }) => {
     <div>
       <h2>Audio</h2>
       {editMode && (<>
-        <SongPageOpenModalButton
+        <OpenModalButton
           modalComponent={<ReplaceAudioFileModal song={song} />}
           buttonText={"Replace Audio File"}
           onModalClose={closeEditMode}
@@ -121,19 +126,21 @@ const SongContentPage = ({ song, user }) => {
       <p>Uploaded by user with id {song.uploaded_by_user_id}</p>
       <p>Download Link: {song.s3_key}</p>
     </div>
-    <div>
-      <h2>Comments</h2>
-    </div>
     {editMode && (<>
       <div>
         <h2>Dangerous Zone</h2>
-        <SongPageOpenModalButton
-          modalComponent={<h1>Confirm Delete</h1>}
+        <p>This section is for deleting the song. This operation is irreversible and will delete all comments and likes associated with it as well.</p>
+        <OpenModalButton
+          modalComponent={< DeleteSongConfirmModal song={song} />}
           buttonText={"Permanently Delete This Song"}
           onModalClose={closeEditMode}
         />
       </div>
     </>)}
+    <div>
+      <PostCommentForm song={song} user={user} />
+      <SongCommentSection song={song} user={user} />
+    </div>
   </>)
 }
 

@@ -12,7 +12,6 @@ const UpdateSongLyricsModal = ({ currentLyrics, song }) => {
   // show errors
   const [errors, setErrors] = useState({});
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 

@@ -25,6 +25,7 @@ def update_comment_by_id(id):
 
     # use form to validate the data
     form = CommentForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
     if not form.validate_on_submit():
         return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 

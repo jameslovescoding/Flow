@@ -27,7 +27,7 @@ const UpdateSongMetadataModal = ({ metadata, song }) => {
       "album": album,
       "description": description.length ? description : null,
       "genre": genre.length ? genre : null,
-      "release_date": release_date.length ? release_date : null,
+      "release_date": release_date.length ? release_date : "",
     };
 
     console.log("newMetadata", newMetadata);
