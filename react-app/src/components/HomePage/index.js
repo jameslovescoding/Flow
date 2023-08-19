@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { getSongsForHomePage } from "../../store/song";
 import SongTile from "./SongTile";
+import "./HomePage.css";
 
 function HomePage() {
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ function HomePage() {
     <h1>Find songs you like</h1>
     {pageStatus === "error" && <p>An error occurred</p>}
     {pageStatus === "done" && (<>
-      <div>
+      <div className="song-list-container">
         {allSongs["all_songs"].map((song => {
           return (<>
             <SongTile song={song} />

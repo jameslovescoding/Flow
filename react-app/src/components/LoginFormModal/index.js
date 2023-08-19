@@ -32,18 +32,10 @@ function LoginFormModal() {
   }
 
   const handleLoginWithDemoUser = async () => {
-
-    const demoUserEmail = "james123456@gmail.com"
-
-    const demoUserPassword = "123456Pa$$"
-
-    const data = await dispatch(login(demoUserEmail, demoUserPassword));
-    if (data) {
-      setErrors(data);
-    } else {
-      history.push('/my-home')
-      closeModal()
-    }
+    const demoUserEmail = "david@aa.io"
+    const demoUserPassword = "Password123$"
+    setEmail(demoUserEmail);
+    setPassword(demoUserPassword);
   }
 
   useEffect(() => {
@@ -51,50 +43,45 @@ function LoginFormModal() {
   }, [email, password])
 
   return (
-    <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <ul>
-            {Object.values(errors).map((error, idx) => (
-              <li key={idx}>{error}</li>
-            ))}
-          </ul>
+    <div className="auth-modal-container">
+      <h1 className="auth-modal-heading-h1">Log In</h1>
+      <form className="auth-modal-form" onSubmit={handleSubmit}>
+        <div className="auth-modal-compact-grid">
+          <label for="login-modal-email">Email</label>
+          <input
+            id="login-modal-email"
+            type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={"Please enter your email"}
+            required
+          />
         </div>
-        <div>
-          <label>
-            Email
-            <input
-              type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={"Please enter your email"}
-              required
-            />
-          </label>
+        <div className="auth-modal-compact-grid">
+          <label for="login-modal-password">Password</label>
+          <input
+            id="login-modal-password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder={"Please enter your password"}
+            required
+          />
         </div>
-        <div>
-          <label>
-            Password
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder={"Please enter your password"}
-              required
-            />
-          </label>
-        </div>
-        <button disabled={submitDisable} type="submit">Log In</button>
+        {Object.values(errors).length !== 0 &&
+          <div className="error-message">
+            <ul>
+              {Object.values(errors).map((error, idx) => (
+                <li key={idx}>{error}</li>
+              ))}
+            </ul>
+          </div>}
+        <button className="auth-modal-form-button hover-shadow" disabled={submitDisable} type="submit">Log In</button>
+        <p>Or, you could slogin as demo user.</p>
       </form>
-      <div>
-        <p>Don't have an account?</p>
-        <button onClick={handleRedirectToSignUp}>Create New Account</button>
-      </div>
-      <div>
-        <button onClick={handleLoginWithDemoUser}>Demo User</button>
-      </div>
-    </>
+      <button className="auth-modal-form-button hover-shadow" onClick={handleLoginWithDemoUser}>Load Demo User Credential</button>
+
+    </div>
   );
 }
 

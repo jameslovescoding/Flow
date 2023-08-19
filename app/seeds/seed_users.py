@@ -12,49 +12,29 @@ def seed_users():
     # db.session.add(marnie)
     # db.session.add(bobbie)
     user1 = User(
-        password='password',
-        first_name='David',
-        last_name='Smith',
+        password='Password123$',
         username='david2755',
         email='david@aa.io',
-        bio='I like trance music and progressive metal music',
-        profile_pic_url='https://media.istockphoto.com/id/465021633/photo/young-boy-dressed-as-a-gentleman-with-sunglasses.jpg?s=612x612&w=0&k=20&c=90ILhXLf-H7YHH0LrGGR0cRYYNwd9L5mJtoZr38cEik=',
     )
     user2 = User(
-        password='password',
-        first_name='Jenny',
-        last_name='Lee',
+        password='Password123$',
         username='JennyL7714',
         email='jenny@aa.io',
-        bio='I like pop music and Talor Swift',
-        profile_pic_url='https://sf2.be.com/wp-content/uploads/sites/2/2016/05/screen-shot-2016-05-18-at-12.54.32-pm-417x410.png',
     )
     user3 = User(
-        password='password',
-        first_name='Alex',
-        last_name='Berg',
+        password='Password123$',
         username='alexb117',
         email='alex@aa.io',
-        bio='I like rock music',
-        profile_pic_url='https://www.billboard.com/wp-content/uploads/2023/02/Bram-van-den-Berg-billboard-1548.jpg?w=942&h=623&crop=1',
     )
     user4 = User(
         password='password',
-        first_name='Chadwick',
-        last_name='Boseman',
         username='blackpanther1990',
         email='chad@aa.io',
-        bio='I like dj and rap',
-        profile_pic_url='https://www.syfy.com/sites/syfy/files/2020/12/chadwick-boseman-black-panther.jpg',
     )
     user5 = User(
-        password='password',
-        first_name='Terry',
-        last_name='Ma',
+        password='Password123$',
         username='TM945',
         email='terry@aa.io',
-        bio='I like Chinese pop music',
-        profile_pic_url='https://img.buzzfeed.com/buzzfeed-static/static/2015-07/16/16/enhanced/webdr01/original-1836-1437079228-4.jpg?downsize=700%3A%2A&output-quality=auto&output-format=auto',
     )
     db.session.add(user1)
     db.session.add(user2)

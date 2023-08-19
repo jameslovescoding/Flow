@@ -29,12 +29,6 @@ function App() {
           <Route exact path="/" >
             <LandingPage />
           </Route>
-          <Route path="/login" >
-            <LoginFormPage />
-          </Route>
-          <Route path="/signup" >
-            <SignupFormPage />
-          </Route>
           <ProtectedRoute path="/my-home" >
             <HomePage />
           </ProtectedRoute>
@@ -50,7 +44,6 @@ function App() {
           <ProtectedRoute path="/activity" >
             <ActivityPage />
           </ProtectedRoute>
-
         </Switch>
       )}
     </>

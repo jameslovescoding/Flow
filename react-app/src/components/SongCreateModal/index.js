@@ -5,6 +5,7 @@ import { uploadNewSong } from "../../store/song";
 import CustomCompleteModal from "../CustomCompleteModal";
 import CustomErrorModal from "../CustomErrorModal";
 import { useModal } from "../../context/Modal";
+import FileUploader from "../FileUploader";
 
 function SongCreateModal({ initialValues }) {
   const dispatch = useDispatch();
@@ -58,68 +59,70 @@ function SongCreateModal({ initialValues }) {
     closeModal()
   }
 
+  const cancelButtonText = isUploading ? "Uploading..." : "Cancel";
+
   useEffect(() => {
     setSubmitDisable(!audio || !title.length || !artist.length || !album.length);
   }, [audio, title, artist, album])
 
 
-  return (<>
+  return (<div className="upload-modal-container">
     <h1>Upload and Share</h1>
     <p>To upload a song, please provide title, artist, album and the audio file.</p>
     <form
       onSubmit={handleSubmit}
       encType="multipart/form-data"
+      className="auth-modal-form"
     >
-      <div>
+      <div className="upload-modal-compact-grid">
         <label>
           Title
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder={"Please enter title of the song"}
-          />
         </label>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder={"Please enter title of the song"}
+        />
       </div>
-      <div>
+      <div className="upload-modal-compact-grid">
         <label>
           Artist
-          <input
-            type="text"
-            value={artist}
-            onChange={(e) => setArtist(e.target.value)}
-            placeholder={"Please enter artist of the song"}
-          />
         </label>
+        <input
+          type="text"
+          value={artist}
+          onChange={(e) => setArtist(e.target.value)}
+          placeholder={"Please enter artist of the song"}
+        />
       </div>
-      <div>
+      <div className="upload-modal-compact-grid">
         <label>
           Album
-          <input
-            type="text"
-            value={album}
-            onChange={(e) => setAlbum(e.target.value)}
-            placeholder={"Please enter album of the song"}
-          />
         </label>
+        <input
+          type="text"
+          value={album}
+          onChange={(e) => setAlbum(e.target.value)}
+          placeholder={"Please enter album of the song"}
+        />
       </div>
-      <div>
-        <label>
-          Audio File
-          <input
-            type="file"
-            accept="audio/*"
-            onChange={(e) => setAudio(e.target.files[0])}
-            required
-          />
-        </label>
-        <p>We support the following audio formats: .mp3, .wav, .aac, .wma, .flac</p>
+      <div className="file-upload-section-container">
+        <FileUploader
+          buttonText={(<>
+            <i className="fa-solid fa-file-audio fa-3x"></i><span>Upload Audio</span>
+          </>)}
+          file={audio}
+          setFile={setAudio}
+          acceptFileTypes={"audio/*"}
+        />
+
       </div>
-      <button disabled={submitDisable} type="submit">Upload</button>
-      {isUploading && <p>Loading...</p>}
+      <p className="upload-modal-file-format">We support the following audio formats: .mp3, .wav, .aac, .wma, .flac</p>
+      <button className="upload-modal-form-button hover-shadow" disabled={submitDisable} type="submit">Upload</button>
     </form>
-    <button onClick={handleCancel}>Cancel</button>
-  </>)
+    <button className="upload-modal-form-button upload-modal-form-cancel-button hover-shadow" disabled={isUploading} onClick={handleCancel}>{cancelButtonText}</button>
+  </div>)
 }
 
 export default SongCreateModal

@@ -12,6 +12,8 @@ import {
 import OpenModalButton from "../OpenModalButton";
 import PostCommentForm from "./PostCommentForm";
 import ShowCommentSection from "./ShowCommentSection";
+import EditModeButton from "../EditModeButton";
+import "./SongContentPage.css";
 
 const SongContentPage = ({ song, user }) => {
   const [editMode, setEditMode] = useState(false);
@@ -42,75 +44,113 @@ const SongContentPage = ({ song, user }) => {
   const thumbnailEditModalTitle = isUsingDefaultThumbnail ? "Upload Thumbnail For This Song" : "Replace Thumbnail Fo This Song";
 
   return (<div className="page-container-wide">
-    <h1>{song.title}</h1>
-    {enableEditMode && <button onClick={handleToggleEditMode}>{editButtonTitle}</button>}
-    <div>
-      <h2>Thumbnail</h2>
-      {editMode && (<>
-        <OpenModalButton
-          modalComponent={<UpdateSongThumbnailModal song={song} modalTitle={thumbnailEditModalTitle} />}
-          buttonText={thumbnailEditModalTitle}
-          onModalClose={closeEditMode}
-        />
-        <OpenModalButton
-          modalComponent={<RemoveSongThumbnailModal song={song} />}
-          buttonText="Remove Current Thumbnail"
-          onModalClose={closeEditMode}
-          buttonDisable={isUsingDefaultThumbnail}
-        />
-      </>)}
-      <div className="song-thumbnail-container-large">
-        <img className="song-thumbnail-img" src={thumbnail} alt={"song thumbnail"} />
-      </div>
-      {isUsingDefaultThumbnail && <p>(This is our default thumbnail placeholder. Upload your own thumbnail for your song in edit mode.)</p>}
-    </div>
-    <div>
-      <h2>Metadata</h2>
-      <div>
-        {editMode && (<>
-          <OpenModalButton
-            modalComponent={<>
-              <UpdateSongMetadataModal
-                metadata={{
-                  "title": song.title,
-                  "artist": song.artist,
-                  "album": song.album,
-                  "description": song.description,
-                  "genre": song.genre,
-                  "release_date": song.release_date,
-                }}
-                song={song}
+    <div className="song-content-banner-container">
+      <div className="song-content-banner">
+        {/* title */}
+        <div className="song-content-banner-title">
+          <h1>{song.title}</h1>
+        </div>
+        <div className="song-content-banner-edit-button">
+          <EditModeButton
+            buttonText={"Edit Mode"}
+            onButtonClick={handleToggleEditMode}
+            buttonState={editMode ? "on" : "off"}
+          />
+        </div>
+        {/* thumbnail */}
+        <div className="song-content-banner-thumbnail">
+          <div className="song-thumbnail-container-large ">
+            <img className="song-thumbnail-img" src={thumbnail} alt={"song thumbnail"} />
+          </div>
+          <div className="song-content-banner-thumbnail-edit-section">
+            {editMode && (<>
+              <OpenModalButton
+                modalComponent={<UpdateSongThumbnailModal song={song} modalTitle={thumbnailEditModalTitle} />}
+                onModalClose={closeEditMode}
+                buttonText={(<>
+                  <i className="fa-solid fa-camera"></i><span> Upload</span>
+                </>)}
+                addedClassName="hover-shadow"
               />
-            </>}
-            buttonText={"Update Metadata"}
-            onModalClose={closeEditMode}
-          />
-        </>)}
-      </div>
-      <div>
-        <p>Title: {song.title}</p>
-        <p>Artist: {song.artist}</p>
-        <p>Album: {song.album}</p>
-        <p>Description: {song.description ? song.description : "??"}</p>
-        <p>Genre: {song.genre ? song.genre : "??"}</p>
-        <p>Release Date: {song.release_date ? dateConverter(song.release_date) : "??"}</p>
+              <OpenModalButton
+                modalComponent={<RemoveSongThumbnailModal song={song} />}
+                buttonText={(<>
+                  <i className="fa-solid fa-trash"></i><span> Remove</span>
+                </>)}
+                onModalClose={closeEditMode}
+                buttonDisable={isUsingDefaultThumbnail}
+                addedClassName="hover-shadow"
+              />
+            </>)}
+          </div>
+        </div>
+        {/*meta*/}
+        <div className="song-content-banner-meta">
+          <h2>Metadata</h2>
+          <p>Title: {song.title}</p>
+          <p>Artist: {song.artist}</p>
+          <p>Album: {song.album}</p>
+          <p>Genre: {song.genre ? song.genre : "??"}</p>
+          <p>Release Date: {song.release_date ? dateConverter(song.release_date) : "??"}</p>
+          <p>Description: {song.description ? song.description : "??"}</p>
+          {editMode && (<>
+            <OpenModalButton
+              modalComponent={<>
+                <UpdateSongMetadataModal
+                  metadata={{
+                    "title": song.title,
+                    "artist": song.artist,
+                    "album": song.album,
+                    "description": song.description,
+                    "genre": song.genre,
+                    "release_date": song.release_date,
+                  }}
+                  song={song}
+                />
+              </>}
+              buttonText={(<>
+                <i class="fa-solid fa-pen"></i><span> Edit Metadata</span>
+              </>)}
+              onModalClose={closeEditMode}
+              addedClassName="hover-shadow song-content-banner-edit-meta-button"
+            />
+          </>)}
+        </div>
+        {/* control-panels */}
+        <div className="control-panels">
+          <h2>Like</h2>
+          <h2>Comment</h2>
+          <h2>Play</h2>
+        </div>
+        {/* lyrics */}
+        <div className="song-content-banner-lyrics">
+          <h2>Lyrics</h2>
+          <div>
+            <p>{song.lyrics ? song.lyrics : "(empty)"}</p>
+          </div>
+          <div>
+            {editMode && (<>
+              <OpenModalButton
+                modalComponent={< UpdateSongLyricsModal currentLyrics={song.lyrics} song={song} />}
+                buttonText={(<>
+                  <i class="fa-solid fa-pen"></i><span> Update Lyrics</span>
+                </>)}
+                onModalClose={closeEditMode}
+                addedClassName="hover-shadow song-content-banner-edit-lyrics-button"
+              />
+            </>)}
+          </div>
+        </div>
+        {/* comments */}
+        <div className="song-content-banner-comments">
+          <PostCommentForm song={song} user={user} />
+          <ShowCommentSection song={song} user={user} />
+        </div>
+
       </div>
     </div>
-    <div>
-      <h2>Lyrics</h2>
-      <div>
-        {editMode && (<>
-          <OpenModalButton
-            modalComponent={< UpdateSongLyricsModal currentLyrics={song.lyrics} song={song} />}
-            buttonText={"Update Lyrics"}
-            onModalClose={closeEditMode}
-          />
-        </>)}
-      </div>
-      <div>
-        <p>{song.lyrics ? song.lyrics : "(empty)"}</p>
-      </div>
-    </div>
+
+
     <div>
       <h2>Audio</h2>
       {editMode && (<>
@@ -137,11 +177,32 @@ const SongContentPage = ({ song, user }) => {
         />
       </div>
     </>)}
-    <div>
-      <PostCommentForm song={song} user={user} />
-      <ShowCommentSection song={song} user={user} />
-    </div>
+
   </div>)
 }
 
 export default SongContentPage;
+
+/**
+  <div>
+      {editMode && (<>
+        <OpenModalButton
+          modalComponent={<UpdateSongThumbnailModal song={song} modalTitle={thumbnailEditModalTitle} />}
+          onModalClose={closeEditMode}
+          buttonText={(<>
+            <i className="fa-solid fa-camera"></i><span> Upload</span>
+          </>)}
+          addedClassName="hover-shadow"
+        />
+        <OpenModalButton
+          modalComponent={<RemoveSongThumbnailModal song={song} />}
+          buttonText={(<>
+            <i className="fa-solid fa-trash"></i><span> Remove</span>
+          </>)}
+          onModalClose={closeEditMode}
+          buttonDisable={isUsingDefaultThumbnail}
+          addedClassName="hover-shadow"
+        />
+      </>)}
+    </div>
+ */

@@ -11,6 +11,7 @@ const UpdateAccountInfoModal = ({ user }) => {
   //const [submitDisable, setSubmitDisable] = useState(true);
   const [errors, setErrors] = useState({});
   const { closeModal, setModalContent } = useModal();
+  const [counter, setCounter] = useState(user.bio ? user.bio.length : 0);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,50 +38,64 @@ const UpdateAccountInfoModal = ({ user }) => {
   //   setSubmitDisable(!firstName.length && !lastName.length && !bio.length)
   // }, [firstName, lastName, bio])
 
-  return (<>
-    <h1>Update Account Information</h1>
-    <p>You can update your first name, last name and bio here!</p>
-    <form onSubmit={handleSubmit}>
-      <div>
-        {errors.first_name && <p>Error: {errors.first_name}</p>}
+  useEffect(() => {
+    setCounter(bio.length);
+  }, [bio])
+
+  return (<div className="auth-modal-container">
+    <h1>Update Information</h1>
+    <form className="auth-modal-form" onSubmit={handleSubmit}>
+
+      {errors.first_name && <p>Error: {errors.first_name}</p>}
+      <div className="auth-modal-compact-grid">
         <label>
           First Name
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            placeholder={"Please enter your first name"}
-          />
         </label>
+        <input
+          type="text"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          placeholder={"Please enter your first name"}
+        />
       </div>
-      <div>
-        {errors.last_name && <p>Error: {errors.last_name}</p>}
+      <div className="auth-modal-compact-grid">
         <label>
           Last Name
-          <input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            placeholder={"Please enter your bio"}
-          />
         </label>
+        <input
+          type="text"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          placeholder={"Please enter your last name"}
+        />
       </div>
-      <div>
-        {errors.bio && <p>Error: {errors.bio}</p>}
+      <div className="auth-modal-compact-grid">
         <label>
           Bio
-          <input
-            type="text"
+        </label>
+        <div className="text-area-with-counter">
+          <textarea
             value={bio}
             onChange={(e) => setBio(e.target.value)}
-            placeholder={"Please enter your last name"}
+            placeholder="Please enter your bio"
+            maxlength={255}
+            rows="8"
           />
-        </label>
+          <p>{counter} / 255</p>
+        </div>
+
       </div>
-      <button type="submit">Update</button>
+
+      {errors.last_name && <p>Error: {errors.last_name}</p>}
+
+      {errors.bio && <p>Error: {errors.bio}</p>}
+
+
+      <p>Hints: delete data of a field by leaving it empty.</p>
+      <button className="auth-modal-form-button hover-shadow" type="submit">Update</button>
     </form>
-    <button onClick={handleCancel}>Cancel</button>
-  </>)
+    <button className="auth-modal-form-button upload-modal-form-cancel-button hover-shadow" onClick={handleCancel}>Cancel</button>
+  </div>)
 }
 
 export default UpdateAccountInfoModal
