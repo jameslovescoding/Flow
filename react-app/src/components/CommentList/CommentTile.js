@@ -31,30 +31,28 @@ const CommentTile = ({ comment }) => {
   const commentEdited = comment.created_at !== comment.updated_at;
   const showEditModeButton = comment.user_id === sessionUser.id;
 
-  return (<>
+  return (<div className="comment-tile-container">
 
-    <div className="user-icon-container-small">
+    <div className="user-icon-container-small comment-tile-icon">
       <img className="user-icon-img" src={userIcon} alt="user icon" />
     </div>
-    <div>
-      <p><i className="fa-solid fa-user"></i> {user.username}</p>
-      <p><i className="fa-solid fa-clock"></i> {comment.created_at}</p>
-      <p><i className="fa-solid fa-comment"></i> {comment.text}{commentEdited && <span> (edited)</span>}</p>
-    </div>
-    {showEditModeButton && <button onClick={handleToggleEditMode}><i className="fa-solid fa-square-caret-down"></i></button>}
-    {editMode && (<>
+    <p className="comment-tile-username"><i className="fa-solid fa-user"></i> {user.username}</p>
+    <p className="comment-tile-timestamp">{comment.created_at}</p>
+    <p className="comment-tile-text">{comment.text}{commentEdited && <span> (edited)</span>}</p>
+    {showEditModeButton && <button className="comment-tile-edit" onClick={handleToggleEditMode}><i className="fa-solid fa-square-caret-down"></i></button>}
+    {editMode && (<div className="comment-tile-edit-button-section">
       <OpenModalButton
         modalComponent={<EditCommentModal comment={comment} />}
-        buttonText={"Edit Comment"}
+        buttonText={"Edit"}
         onModalClose={closeEditMode}
       />
       <OpenModalButton
         modalComponent={<DeleteCommentModal comment={comment} />}
-        buttonText={"Delete Comment"}
+        buttonText={"Deletet"}
         onModalClose={closeEditMode}
       />
-    </>)}
-  </>)
+    </div>)}
+  </div>)
 }
 
 export default CommentTile;

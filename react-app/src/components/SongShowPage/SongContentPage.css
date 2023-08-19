@@ -87,12 +87,25 @@
   padding-left: 40px;
 }
 
+/* control panel*/
+
+.control-panels {
+  grid-area: control;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+}
+
 /* lyrics */
 
 .song-content-banner-lyrics {
   grid-area: lyrics;
   border-right: 1px solid lightgray;
   position: relative;
+  padding-left: 20px;
 }
 
 .song-content-banner-edit-lyrics-button {
@@ -106,14 +119,37 @@
 .song-content-banner-comments {
   grid-area: comment;
   padding-left: 40px;
+  padding-right: 20px;
 }
 
-.control-panels {
-  grid-area: control;
+.song-content-banner-comments form {
+  display: flex;
+  flex-direction: column;
+}
+
+.song-content-banner-comments textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 15px 20px;
+  border-radius: 20px;
+  border: 1px solid lightgray;
+  margin: 10px 0px;
+  resize: vertical;
+}
+
+.post-comment-counter-container {
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  border-top: 1px solid lightgray;
-  border-bottom: 1px solid lightgray;
+}
+
+.post-comment-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
 }

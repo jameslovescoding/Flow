@@ -146,11 +146,8 @@ const SongContentPage = ({ song, user }) => {
           <PostCommentForm song={song} user={user} />
           <ShowCommentSection song={song} user={user} />
         </div>
-
       </div>
     </div>
-
-
     <div>
       <h2>Audio</h2>
       {editMode && (<>
@@ -160,8 +157,6 @@ const SongContentPage = ({ song, user }) => {
           onModalClose={closeEditMode}
         />
       </>)}
-      <p>Duration</p>
-      <p>File Size</p>
       <p>Uploaded on: {song.created_at}</p>
       <p>Uploaded by user with id {song.uploaded_by_user_id}</p>
       <p>Download Link: {song.s3_key}</p>

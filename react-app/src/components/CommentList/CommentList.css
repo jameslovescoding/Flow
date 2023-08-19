@@ -1,0 +1,57 @@
+.comment-tile-container {
+  border-top: 1px solid lightgrey;
+  padding: 20px;
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-areas:
+    "icon username edit"
+    "icon timestamp timestamp"
+    "icon text text";
+  grid-template-columns: 70px 1fr 30px;
+  grid-template-rows: 30px 30px 1fr;
+  position: relative;
+}
+
+.comment-tile-container p {
+  margin: 0px;
+}
+
+.comment-tile-icon {
+  grid-area: icon;
+}
+
+.comment-tile-username {
+  grid-area: username;
+}
+
+.comment-tile-edit {
+  grid-area: edit;
+}
+
+.comment-tile-timestamp {
+  grid-area: timestamp;
+}
+
+.comment-tile-text {
+  grid-area: text;
+  padding: 20px 0px 40px 0px;
+}
+
+.comment-tile-edit-button-section {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: baseline;
+  gap: 5px;
+  background-color: lightgray;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.comment-tile-edit-button-section button {
+  width: 70px;
+  background-color: white;
+}

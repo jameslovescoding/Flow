@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CommentTile from "./CommentTile";
+import "./CommentList.css";
 
 const CommentList = ({ commentList }) => {
 
