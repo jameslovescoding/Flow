@@ -1,0 +1,119 @@
+.song-content-banner-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 50px 0px;
+  border-bottom: 1px solid lightgray;
+}
+
+.song-content-banner {
+  display: grid;
+  grid-template-areas:
+    "title title edit"
+    "thumb meta meta"
+    "control control control"
+    "lyrics comment comment";
+  grid-template-columns: 360px 1fr 180px;
+  grid-template-rows: 80px 420px 100px 1fr;
+  gap: 0px;
+  width: 960px;
+}
+
+/* title */
+
+.song-content-banner-title {
+  grid-area: title;
+}
+
+.song-content-banner-title h1 {
+  margin: 0px;
+  padding: 0px;
+}
+
+/* edit */
+
+.song-content-banner-edit-button {
+  grid-area: edit;
+  width: 100%;
+}
+
+/* thumbnail */
+
+.song-content-banner-thumbnail {
+  grid-area: thumb;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 25px;
+  padding-right: 50px;
+}
+
+.song-content-banner-thumbnail-edit-section {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.song-content-banner-thumbnail button,
+.song-content-banner-meta button,
+.song-content-banner-lyrics button {
+  background-color: white;
+  border: 0px solid white;
+  color: rgb(0, 0, 0);
+  border-radius: 30px;
+  padding: 10px 20px;
+}
+
+/* metadata */
+
+.song-content-banner-edit-meta-button {
+  position: absolute;
+  top: 18px;
+  right: 0px;
+}
+
+
+.song-content-banner-meta {
+  grid-area: meta;
+  position: relative;
+  padding-left: 40px;
+}
+
+/* lyrics */
+
+.song-content-banner-lyrics {
+  grid-area: lyrics;
+  border-right: 1px solid lightgray;
+  position: relative;
+}
+
+.song-content-banner-edit-lyrics-button {
+  position: absolute;
+  top: 20px;
+  right: 10px;
+}
+
+/* comment */
+
+.song-content-banner-comments {
+  grid-area: comment;
+  padding-left: 40px;
+}
+
+.control-panels {
+  grid-area: control;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+}

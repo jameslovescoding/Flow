@@ -28,12 +28,12 @@ const CustomCompleteModal = ({ modalTitle, modalText, actionText, seconds, redir
     }
   }, [secondsLeft])
 
-  return (<>
+  return (<div className="custom-complete-container">
     <h1>{modalTitle}</h1>
     <p>{modalText}</p>
-    <p>{actionText} in {secondsLeft}s</p>
-    <button onClick={handleDismiss}>Dismiss</button>
-  </>)
+    <p>{actionText} in <span>{secondsLeft}</span> s</p>
+    <button className="hover-shadow" onClick={handleDismiss}>Dismiss</button>
+  </div>)
 }
 
 export default CustomCompleteModal

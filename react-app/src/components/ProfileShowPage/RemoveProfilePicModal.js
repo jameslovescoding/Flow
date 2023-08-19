@@ -22,15 +22,15 @@ const RemoveProfilePicModal = () => {
     closeModal();
   };
 
-  return (<>
+  return (<div className="confirm-delete-modal-container">
     <h1>Confirm Delete</h1>
     <p>Are you sure you want to remove your current profile picture?</p>
-    <div>
-      <button onClick={handleYesButtonClick}>Yes (Delete)</button>
-      <button onClick={handleNoButtonClick}>No (Cancel)</button>
+    <div className="delete-modal-buttons">
+      <button className="delete-button delete-yes hover-shadow" onClick={handleYesButtonClick}>Yes (Delete)</button>
+      <button className="delete-button delete-no hover-shadow" onClick={handleNoButtonClick}>No (Cancel)</button>
     </div>
 
-  </>)
+  </div>)
 }
 
 export default RemoveProfilePicModal

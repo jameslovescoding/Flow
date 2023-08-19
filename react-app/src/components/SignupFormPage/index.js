@@ -23,9 +23,11 @@ function SignupFormPage() {
       const data = await dispatch(signUp(username, email, password));
       if (data) {
         setErrors(data)
+      } else {
+        history.push('/profile')
       }
     } else {
-      setErrors(['Confirm Password field must be the same as the Password field']);
+      setErrors({ "confirm_papssword": "passwords need to match" });
     }
   };
 

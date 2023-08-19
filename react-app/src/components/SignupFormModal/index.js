@@ -45,71 +45,70 @@ function SignupFormModal() {
 	}, [email, username, password, confirmPassword])
 
 	return (
-		<>
-			<h1>Sign Up</h1>
-			<form onSubmit={handleSubmit}>
-				<div>
-					{errors.email && <p>{errors.email}</p>}
+		<div className="auth-modal-container-wide">
+			<h1 className="auth-modal-heading-h1">Sign Up</h1>
+			<form className="auth-modal-form" onSubmit={handleSubmit}>
+
+				<div className="auth-modal-compact-grid">
 					<label>
 						Email
-						<input
-							type="text"
-							value={email}
-							onChange={(e) => setEmail(e.target.value)}
-							placeholder={"Please enter your email"}
-							required
-						/>
 					</label>
+					<input
+						type="text"
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
+						placeholder={"Please enter your email"}
+						required
+					/>
 				</div>
-				<div>
-					{errors.username && <p>{errors.username}</p>}
+				{errors.email && <p className="error-message">Error: {errors.email}</p>}
+
+				<div className="auth-modal-compact-grid">
 					<label>
 						Username
-						<input
-							type="text"
-							value={username}
-							onChange={(e) => setUsername(e.target.value)}
-							placeholder={"Please choose your username"}
-							required
-						/>
 					</label>
+					<input
+						type="text"
+						value={username}
+						onChange={(e) => setUsername(e.target.value)}
+						placeholder={"Please choose your username"}
+						required
+					/>
 				</div>
-				<div>
-					{errors.password && <p>{errors.password}</p>}
+				{errors.username && <p className="error-message">Error: {errors.username}</p>}
+
+				<div className="auth-modal-compact-grid">
 					<label>
 						Password
-						<input
-							type="password"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							placeholder={"Please set your password"}
-							required
-						/>
 					</label>
+					<input
+						type="password"
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
+						placeholder={"Please set your password"}
+						required
+					/>
 				</div>
-				<div>
-					{errors.confirm_papssword && <p>{errors.confirm_papssword}</p>}
+				{errors.password && <p className="error-message">Error: {errors.password}</p>}
+
+				<div className="auth-modal-compact-grid">
 					<label>
 						Confirm Password
-						<input
-							type="password"
-							value={confirmPassword}
-							onChange={(e) => setConfirmPassword(e.target.value)}
-							placeholder={"Please confirm your password"}
-							required
-						/>
 					</label>
+					<input
+						type="password"
+						value={confirmPassword}
+						onChange={(e) => setConfirmPassword(e.target.value)}
+						placeholder={"Please confirm your password"}
+						required
+					/>
 				</div>
-				<div>
-					<p>Email and Username must be equal or longer than 4 characters.</p>
-					<p>Password must be equal or longer than 8 characters. Containing at least 1 upper case, 1 lower case, 1 number and 1 special characters in "@#$%^&+="</p>
-				</div>
-
-				<button disabled={submitDisable} type="submit">Sign Up</button>
+				{errors.confirm_papssword && <p className="error-message">Error: {errors.confirm_papssword}</p>}
+				<p>Hints:</p>
+				<p>Email and Username must be equal or longer than 4 characters. Password must be equal or longer than 8 characters. Containing at least 1 upper case, 1 lower case, 1 number and 1 special characters in "@ # $ % ^ & + =".</p>
+				<button className="auth-modal-form-button hover-shadow" disabled={submitDisable} type="submit">Sign Up</button>
 			</form>
-			<p>Already have an account?</p>
-			<button onClick={handleGoToLogin}>Login</button>
-		</>
+		</div>
 	);
 }
 

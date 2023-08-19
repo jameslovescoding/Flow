@@ -1,0 +1,33 @@
+.edit-mode-button-assembly {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.edit-mode-button-capsule {
+  height: 30px;
+  width: 52px;
+  border-radius: 15px;
+  border-width: 0px;
+  box-sizing: border-box;
+  padding: 2px;
+  background-color: rgb(207, 207, 207);
+  transition: all 0.3s ease-in-out;
+}
+
+.edit-mode-button-circle {
+  height: 26px;
+  width: 26px;
+  border-radius: 50%;
+  background-color: rgb(248, 248, 248);
+  transition: all 0.3s ease-in-out;
+}
+
+.edit-mode-button-capsule[value="on"] {
+  background-color: rgb(56, 192, 56);
+}
+
+.edit-mode-button-capsule[value="on"] .edit-mode-button-circle {
+  transform: translateX(22px);
+}

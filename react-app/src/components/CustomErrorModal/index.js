@@ -13,14 +13,14 @@ const CustomErrorModal = ({ modalTitle, errorMessage, newModalContent }) => {
     setModalContent(newModalContent)
   }
 
-  return (<>
+  return (<div className="custom-complete-container">
     <h1>{modalTitle}</h1>
     <p>{errorMessage}</p>
     <div>
-      <button onClick={handleTryAgain}>Try again</button>
-      <button onClick={handleDismiss}>Dismiss</button>
+      <button className="custom-complete-button-try-again hover-shadow" onClick={handleTryAgain}>Try again</button>
+      <button className="custom-complete-button-dismiss hover-shadow" onClick={handleDismiss}>Dismiss</button>
     </div>
-  </>)
+  </div>)
 }
 
 export default CustomErrorModal

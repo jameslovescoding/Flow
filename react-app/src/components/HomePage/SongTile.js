@@ -19,11 +19,11 @@ const SongTile = ({ song }) => {
   }
 
   return (<>
-    <div onClick={handleGoToSongContent}>
+    <div className="song-tile-container hover-shadow" onClick={handleGoToSongContent}>
       <div className="song-thumbnail-container-tile">
         <img className="song-thumbnail-img" src={thumbnail} alt={"song thumbnail"} />
       </div>
-      <div>
+      <div className="song-tile-meta-container">
         <p><i className="fa-solid fa-music"></i> {song.title}</p>
         <p><i className="fa-solid fa-user"></i> {song.artist}</p>
         <p><i className="fa-solid fa-record-vinyl"></i> {song.album}</p>

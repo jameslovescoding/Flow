@@ -78,6 +78,8 @@ button,
 .user-icon-container-large {
   height: 200px;
   width: 200px;
+  border: 2px solid black;
+  box-sizing: border-box;
   border-radius: 50%;
   overflow: hidden;
 }
@@ -85,6 +87,8 @@ button,
 .user-icon-container-small {
   height: 60px;
   width: 60px;
+  border: 2px solid black;
+  box-sizing: border-box;
   border-radius: 50%;
   overflow: hidden;
 }
@@ -98,15 +102,19 @@ button,
 /* song thumbnail */
 
 .song-thumbnail-container-tile {
-  height: 200px;
-  width: 200px;
+  height: 150px;
+  width: 150px;
+  border: 2px solid black;
   border-radius: 20%;
+  box-sizing: border-box;
   overflow: hidden;
 }
 
 .song-thumbnail-container-large {
   height: 300px;
   width: 300px;
+  border: 2px solid black;
+  box-sizing: border-box;
   border-radius: 20%;
   overflow: hidden;
 }

@@ -6,7 +6,7 @@ const ProtectedRoute = ({ children, path }) => {
   const sessionUser = useSelector(state => state.session.user);
   if (!sessionUser) {
     return (<>
-      <Redirect to="/login" />
+      <Redirect to="/" />
     </>)
   } else {
     return (<>

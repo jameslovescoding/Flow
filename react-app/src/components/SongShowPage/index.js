@@ -31,7 +31,6 @@ function SongShowPage() {
   }, [songId])
 
   return (<>
-    <h1>Song Show Page</h1>
     {pageStatus === "error" && <p>An error occurred</p>}
     {pageStatus === "done" && <SongContentPage song={currentSong} user={currentUser} />}
   </>)
