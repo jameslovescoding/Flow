@@ -39,17 +39,19 @@ const CommentTile = ({ comment }) => {
     <p className="comment-tile-username"><i className="fa-solid fa-user"></i> {user.username}</p>
     <p className="comment-tile-timestamp">{comment.created_at}</p>
     <p className="comment-tile-text">{comment.text}{commentEdited && <span> (edited)</span>}</p>
-    {showEditModeButton && <button className="comment-tile-edit" onClick={handleToggleEditMode}><i className="fa-solid fa-square-caret-down"></i></button>}
+    {showEditModeButton && <button className="comment-tile-edit hover-shadow" onClick={handleToggleEditMode}><i className="fa-solid fa-square-caret-down"></i></button>}
     {editMode && (<div className="comment-tile-edit-button-section">
       <OpenModalButton
         modalComponent={<EditCommentModal comment={comment} />}
         buttonText={"Edit"}
         onModalClose={closeEditMode}
+        addedClassName={"hover-shadow"}
       />
       <OpenModalButton
         modalComponent={<DeleteCommentModal comment={comment} />}
-        buttonText={"Deletet"}
+        buttonText={"Delete"}
         onModalClose={closeEditMode}
+        addedClassName={"hover-shadow"}
       />
     </div>)}
   </div>)

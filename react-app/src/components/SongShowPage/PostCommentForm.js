@@ -21,7 +21,7 @@ const PostCommentForm = ({ song, user }) => {
     if (resErrors) {
       setErrors(Object.values(resErrors).join(". "));
     } else {
-      handleClear()
+      setCommentText("")
     }
   }
 

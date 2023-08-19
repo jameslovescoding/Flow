@@ -26,6 +26,12 @@
 
 .comment-tile-edit {
   grid-area: edit;
+  height: 30px;
+  width: 30px;
+  border: 0px;
+  border-radius: 50%;
+  color: white;
+  background-color: darkgray;
 }
 
 .comment-tile-timestamp {
@@ -39,19 +45,98 @@
 
 .comment-tile-edit-button-section {
   position: absolute;
-  top: 60px;
-  right: 20px;
+  top: 40px;
+  right: 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: baseline;
   gap: 5px;
-  background-color: lightgray;
+  background-color: white;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 20px 20px 20px 20px;
+  border: 1px solid darkgray;
+  box-shadow:
+    -5px -5px 15px rgba(0, 0, 0, 0.2),
+    5px 5px 20px rgba(0, 0, 0, 0.3);
 }
 
 .comment-tile-edit-button-section button {
-  width: 70px;
-  background-color: white;
+  width: 90px;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: black;
+  border: 0px solid lightgray;
+  background-color: transparent;
+  border-radius: 30px;
+}
+
+/* Edit Comment Modal */
+
+.edit-comment-modal-container {
+  width: 450px;
+}
+
+.edit-comment-modal-container form {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.edit-comment-modal-container textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px 20px;
+  border-radius: 20px;
+  border: 1px solid lightgray;
+  margin: 10px 0px;
+  resize: vertical;
+}
+
+.edit-comment-modal-container button {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ff5a60;
+  border: 0px solid #ff5a60;
+  color: white;
+  border-radius: 30px;
+  margin-bottom: 30px;
+}
+
+.edit-comment-modal-container button:disabled {
+  color: #9d9d9d;
+  background-color: lightgray;
+}
+
+/* Delete Comment Modal */
+
+.delete-comment-modal-container {
+  width: 400px;
+}
+
+.delete-modal-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.delete-button {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: 0px solid #ff5a60;
+  color: white;
+  border-radius: 30px;
+  margin: 10px 0px;
+}
+
+.delete-yes {
+  background-color: #ff5a60;
+}
+
+.delete-no {
+  background-color: rgb(100, 100, 100);
 }

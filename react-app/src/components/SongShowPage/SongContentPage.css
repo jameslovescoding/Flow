@@ -14,7 +14,7 @@
     "title title edit"
     "thumb meta meta"
     "control control control"
-    "lyrics comment comment";
+    "other comment comment";
   grid-template-columns: 360px 1fr 180px;
   grid-template-rows: 80px 420px 100px 1fr;
   gap: 0px;
@@ -64,12 +64,15 @@
 
 .song-content-banner-thumbnail button,
 .song-content-banner-meta button,
-.song-content-banner-lyrics button {
+.song-content-banner-lyrics button,
+.song-content-edit-audio button,
+.song-content-edit-delete button {
   background-color: white;
   border: 0px solid white;
   color: rgb(0, 0, 0);
   border-radius: 30px;
   padding: 10px 20px;
+  border: 1px solid lightgray
 }
 
 /* metadata */
@@ -99,13 +102,26 @@
   border-bottom: 1px solid lightgray;
 }
 
+/* other */
+
+
+.song-content-banner-other {
+  grid-area: other;
+  border-right: 1px solid lightgray;
+  padding-left: 20px;
+
+}
+
+.song-content-edit-audio {
+  border-top: 1px solid lightgray;
+}
+
 /* lyrics */
 
 .song-content-banner-lyrics {
   grid-area: lyrics;
-  border-right: 1px solid lightgray;
+  min-height: 300px;
   position: relative;
-  padding-left: 20px;
 }
 
 .song-content-banner-edit-lyrics-button {
@@ -149,7 +165,21 @@
 .post-comment-buttons {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   gap: 20px;
+}
+
+.post-comment-buttons button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ff5a60;
+  border: 0px solid #ff5a60;
+  color: white;
+  border-radius: 30px;
+}
+
+.post-comment-buttons button:disabled {
+  color: #9d9d9d;
+  background-color: lightgray;
 }

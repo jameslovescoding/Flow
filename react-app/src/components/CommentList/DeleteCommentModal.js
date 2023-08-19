@@ -21,19 +21,19 @@ const DeleteCommentModal = ({ comment }) => {
     closeModal();
   };
 
-  return (<>
+  return (<div className="confirm-delete-modal-container">
     <h1>Confirm Delete</h1>
     <p>Are you sure you want to delete your comment?</p>
     <div>
-      <p>{comment.user.username}:</p>
-      <p>"{comment.text}"</p>
-      <p>{comment.created_at}</p>
+      <p>Username: {comment.user.username}</p>
+      <p>Comment: "{comment.text}"</p>
+      <p>Create at: {comment.created_at}</p>
     </div>
-    <div>
-      <button onClick={handleYesButtonClick}>Yes (Delete)</button>
-      <button onClick={handleNoButtonClick}>No (Cancel)</button>
+    <div className="delete-modal-buttons">
+      <button className="delete-button delete-yes hover-shadow" onClick={handleYesButtonClick}>Yes (Delete)</button>
+      <button className="delete-button delete-no hover-shadow" onClick={handleNoButtonClick}>No (Cancel)</button>
     </div>
-  </>)
+  </div>)
 }
 
 export default DeleteCommentModal

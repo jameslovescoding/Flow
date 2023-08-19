@@ -69,9 +69,21 @@ const UploadProfilePicModal = ({ modalTitle }) => {
         acceptFileTypes={"image/*"}
       />
       <p>Please provide image files with the following extensions: .pdf, .png, .jpg, .jpeg, gif</p>
-      <button className="upload-modal-form-button hover-shadow" disabled={disableButton} type="submit">Submit</button>
+      <button
+        className="upload-modal-form-button hover-shadow"
+        disabled={disableButton}
+        type="submit"
+      >
+        Submit
+      </button>
     </form>
-    <button className="upload-modal-form-button upload-modal-form-cancel-button hover-shadow" disabled={imageLoading} onClick={handleCancel}>{cancelButtonText}</button>
+    <button
+      className="upload-modal-form-button upload-modal-form-cancel-button hover-shadow"
+      disabled={imageLoading}
+      onClick={handleCancel}
+    >
+      {cancelButtonText}
+    </button>
   </div>)
 }
 

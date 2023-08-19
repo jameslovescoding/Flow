@@ -34,7 +34,7 @@ const EditCommentModal = ({ comment }) => {
     setSubmitDisable(!commentText.length);
   }, [commentText])
 
-  return (<>
+  return (<div className="edit-comment-modal-container">
     <h2>Edit Your Comment</h2>
     <div>
       <form onSubmit={handleSubmit}>
@@ -43,13 +43,14 @@ const EditCommentModal = ({ comment }) => {
           onChange={(e) => setCommentText(e.target.value)}
           placeholder="Leave your comment here"
           maxlength={255}
+          rows="5"
         />
         <p>{counter} / 255</p>
-        <button disabled={submitDisable} type="submit">Send</button>
+        <button className="hover-shadow" disabled={submitDisable} type="submit">Send</button>
       </form>
-      <button onClick={handleCancel}>Cancel</button>
+      <button className="hover-shadow" onClick={handleCancel}>Cancel</button>
     </div>
-  </>)
+  </div>)
 }
 
 export default EditCommentModal;

@@ -36,33 +36,37 @@ const UpdateSongLyricsModal = ({ currentLyrics, song }) => {
     setCounter(lyrics.length);
   }, [lyrics])
 
-  return (<>
-    <h1>Update Metadata</h1>
-    <p>You can update title, artirst, album of your song. You can also add extra Information to the metadata such as description, genre, release date.</p>
-    <form onSubmit={handleSubmit}>
-      <div>
-        {errors.lyrics && <p>Error: {errors.lyrics}</p>}
-        <label>
-          Title
-          <textarea
-            onChange={(e) => setLyrics(e.target.value)}
-            placeholder={"Please enter the lyrics"}
-            maxlength={2048}
-          >
-            {lyrics}
-          </textarea>
-          <p>{counter} / 2048</p>
-        </label>
+  return (<div className="auth-modal-container">
+    <h1>Update Lyrics</h1>
+    <form
+      className="auth-modal-form"
+      onSubmit={handleSubmit}>
+      {errors.lyrics && <p>Error: {errors.lyrics}</p>}
+      <label>
+        Lyrics
+      </label>
+      <div className="text-area-with-counter">
+        <textarea
+          onChange={(e) => setLyrics(e.target.value)}
+          placeholder={"Please enter the lyrics"}
+          maxlength={2048}
+          rows="8"
+        >
+          {lyrics}
+        </textarea>
+        <p>{counter} / 2048</p>
       </div>
-      <div>
-        <p>Hints:</p>
-        <p>Maximum length of lyrics is 2048</p>
-        <p>Delete lyrics by setting it to empty</p>
-      </div>
-      <button type="submit">Update</button>
+
+      <p>Hints: Maximum length of lyrics is 2048. Delete lyrics by setting it to empty.</p>
+
+      <button
+        className="auth-modal-form-button hover-shadow"
+        type="submit">Update</button>
     </form>
-    <button onClick={handleCancel}>Cancel</button>
-  </>)
+    <button
+      className="auth-modal-form-button upload-modal-form-cancel-button hover-shadow"
+      onClick={handleCancel}>Cancel</button>
+  </div>)
 }
 
 export default UpdateSongLyricsModal
