@@ -41,7 +41,7 @@ const SongContentPage = ({ song, user }) => {
   }
   const editButtonTitle = editMode ? "Done Editing" : "Enter Edit Mode";
   const enableEditMode = user.id === song.uploaded_by_user_id;
-  const thumbnailEditModalTitle = isUsingDefaultThumbnail ? "Upload Thumbnail For This Song" : "Replace Thumbnail Fo This Song";
+  const thumbnailEditModalTitle = isUsingDefaultThumbnail ? "Upload Thumbnail Picture" : "Replace Thumbnail Picture";
 
   return (<div className="page-container-wide">
     <div className="song-content-banner-container">
@@ -122,61 +122,67 @@ const SongContentPage = ({ song, user }) => {
           <h2>Comment</h2>
           <h2>Play</h2>
         </div>
-        {/* lyrics */}
-        <div className="song-content-banner-lyrics">
-          <h2>Lyrics</h2>
-          <div>
-            <p>{song.lyrics ? song.lyrics : "(empty)"}</p>
+        {/* other */}
+        <div className="song-content-banner-other">
+          <div className="song-content-banner-lyrics">
+            <h2>Lyrics</h2>
+            <div>
+              <p>{song.lyrics ? song.lyrics : "(empty)"}</p>
+            </div>
+            <div>
+              {editMode && (<>
+                <OpenModalButton
+                  modalComponent={< UpdateSongLyricsModal currentLyrics={song.lyrics} song={song} />}
+                  buttonText={(<>
+                    <i class="fa-solid fa-pen"></i><span> Update Lyrics</span>
+                  </>)}
+                  onModalClose={closeEditMode}
+                  addedClassName="hover-shadow song-content-banner-edit-lyrics-button"
+                />
+              </>)}
+            </div>
           </div>
-          <div>
-            {editMode && (<>
+          {editMode && (<>
+            <div className="song-content-edit-audio">
+              <h2>Audio File</h2>
+              {editMode && (<>
+                <OpenModalButton
+                  modalComponent={<ReplaceAudioFileModal song={song} />}
+                  buttonText={<>
+                    <i className="fa-solid fa-upload"></i><span> Re-upload</span>
+                  </>}
+                  onModalClose={closeEditMode}
+                  addedClassName="hover-shadow"
+                />
+              </>)}
+              <p>Uploaded on: {song.created_at}</p>
+              <p>Download Link: <a href={song.s3_key}>{song.title}</a></p>
+            </div>
+            <div className="song-content-edit-delete">
+              <h2>Dangerous Zone</h2>
               <OpenModalButton
-                modalComponent={< UpdateSongLyricsModal currentLyrics={song.lyrics} song={song} />}
-                buttonText={(<>
-                  <i class="fa-solid fa-pen"></i><span> Update Lyrics</span>
-                </>)}
+                modalComponent={< DeleteSongConfirmModal song={song} />}
+                buttonText={<>
+                  <i className="fa-solid fa-trash"></i><span> Delete Song</span>
+                </>}
                 onModalClose={closeEditMode}
-                addedClassName="hover-shadow song-content-banner-edit-lyrics-button"
+                addedClassName="hover-shadow"
               />
-            </>)}
-          </div>
+              <p>This operation is irreversible and will delete all comments and likes associated with it as well.</p>
+            </div>
+          </>)}
+
         </div>
         {/* comments */}
         <div className="song-content-banner-comments">
           <PostCommentForm song={song} user={user} />
           <ShowCommentSection song={song} user={user} />
         </div>
-
       </div>
+
+
     </div>
 
-
-    <div>
-      <h2>Audio</h2>
-      {editMode && (<>
-        <OpenModalButton
-          modalComponent={<ReplaceAudioFileModal song={song} />}
-          buttonText={"Replace Audio File"}
-          onModalClose={closeEditMode}
-        />
-      </>)}
-      <p>Duration</p>
-      <p>File Size</p>
-      <p>Uploaded on: {song.created_at}</p>
-      <p>Uploaded by user with id {song.uploaded_by_user_id}</p>
-      <p>Download Link: {song.s3_key}</p>
-    </div>
-    {editMode && (<>
-      <div>
-        <h2>Dangerous Zone</h2>
-        <p>This section is for deleting the song. This operation is irreversible and will delete all comments and likes associated with it as well.</p>
-        <OpenModalButton
-          modalComponent={< DeleteSongConfirmModal song={song} />}
-          buttonText={"Permanently Delete This Song"}
-          onModalClose={closeEditMode}
-        />
-      </div>
-    </>)}
 
   </div>)
 }

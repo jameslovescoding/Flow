@@ -32,7 +32,7 @@ const CustomCompleteModal = ({ modalTitle, modalText, actionText, seconds, redir
     <h1>{modalTitle}</h1>
     <p>{modalText}</p>
     <p>{actionText} in <span>{secondsLeft}</span> s</p>
-    <button className="hover-shadow" onClick={handleDismiss}>Dismiss</button>
+    <button className="hover-shadow custom-complete-button-dismiss" onClick={handleDismiss}>Dismiss</button>
   </div>)
 }
 

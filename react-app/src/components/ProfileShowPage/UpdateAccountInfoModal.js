@@ -58,6 +58,8 @@ const UpdateAccountInfoModal = ({ user }) => {
           placeholder={"Please enter your first name"}
         />
       </div>
+
+      {errors.last_name && <p>Error: {errors.last_name}</p>}
       <div className="auth-modal-compact-grid">
         <label>
           Last Name
@@ -69,6 +71,8 @@ const UpdateAccountInfoModal = ({ user }) => {
           placeholder={"Please enter your last name"}
         />
       </div>
+
+      {errors.bio && <p>Error: {errors.bio}</p>}
       <div className="auth-modal-compact-grid">
         <label>
           Bio
@@ -85,11 +89,6 @@ const UpdateAccountInfoModal = ({ user }) => {
         </div>
 
       </div>
-
-      {errors.last_name && <p>Error: {errors.last_name}</p>}
-
-      {errors.bio && <p>Error: {errors.bio}</p>}
-
 
       <p>Hints: delete data of a field by leaving it empty.</p>
       <button className="auth-modal-form-button hover-shadow" type="submit">Update</button>

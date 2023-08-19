@@ -50,90 +50,91 @@ const UpdateSongMetadataModal = ({ metadata, song }) => {
     setSubmitDisable(!title.length || !artist.length || !album.length)
   }, [title, artist, album])
 
-  return (<>
+  return (<div className="auth-modal-container">
     <h1>Update Metadata</h1>
-    <p>You can update title, artirst, album of your song. You can also add extra Information to the metadata such as description, genre, release date.</p>
-    <form onSubmit={handleSubmit}>
-      <div>
-        {errors.title && <p>Error: {errors.title}</p>}
+    <form
+      className="update-song-meta-modal-form"
+      onSubmit={handleSubmit}>
+      {errors.title && <p>Error: {errors.title}</p>}
+      <div className="update-song-meta-modal-compact-grid">
         <label>
           Title
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder={"Please enter the title of the song"}
-          />
         </label>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder={"Please enter the title of the song"}
+        />
       </div>
-      <div>
-        {errors.artist && <p>Error: {errors.artist}</p>}
+      {errors.artist && <p>Error: {errors.artist}</p>}
+      <div className="update-song-meta-modal-compact-grid">
         <label>
           Artist
-          <input
-            type="text"
-            value={artist}
-            onChange={(e) => setArtist(e.target.value)}
-            placeholder={"Please enter artist name"}
-          />
         </label>
+        <input
+          type="text"
+          value={artist}
+          onChange={(e) => setArtist(e.target.value)}
+          placeholder={"Please enter artist name"}
+        />
       </div>
-      <div>
-        {errors.album && <p>Error: {errors.album}</p>}
+      {errors.album && <p>Error: {errors.album}</p>}
+      <div className="update-song-meta-modal-compact-grid">
         <label>
           Album
-          <input
-            type="text"
-            value={album}
-            onChange={(e) => setAlbum(e.target.value)}
-            placeholder={"Please enter album name"}
-          />
         </label>
+        <input
+          type="text"
+          value={album}
+          onChange={(e) => setAlbum(e.target.value)}
+          placeholder={"Please enter album name"}
+        />
       </div>
-      <div>
-        {errors.description && <p>Error: {errors.description}</p>}
+      {errors.description && <p>Error: {errors.description}</p>}
+      <div className="update-song-meta-modal-compact-grid">
         <label>
           Description
-          <input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder={"Please add a description for this song"}
-          />
         </label>
+        <input
+          type="text"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder={"Please add a description for this song"}
+        />
       </div>
-      <div>
-        {errors.genre && <p>Error: {errors.genre}</p>}
+      {errors.genre && <p>Error: {errors.genre}</p>}
+      <div className="update-song-meta-modal-compact-grid">
         <label>
           Genre
-          <input
-            type="text"
-            value={genre}
-            onChange={(e) => setGenre(e.target.value)}
-            placeholder={"Please specify genre of this song"}
-          />
         </label>
+        <input
+          type="text"
+          value={genre}
+          onChange={(e) => setGenre(e.target.value)}
+          placeholder={"Please specify genre of this song"}
+        />
       </div>
-      <div>
-        {errors.release_date && <p>Error: {errors.release_date}</p>}
+      {errors.release_date && <p>Error: {errors.release_date}</p>}
+      <div className="update-song-meta-modal-compact-grid">
         <label>
           Release Date
-          <input
-            type="date"
-            value={release_date}
-            onChange={(e) => setReleaseDate(e.target.value)}
-          />
         </label>
+        <input
+          type="date"
+          value={release_date}
+          onChange={(e) => setReleaseDate(e.target.value)}
+        />
       </div>
-      <div>
-        <p>Hints:</p>
-        <p>A song must have title, artirst and album info</p>
-        <p>Delete a data by setting it to empty</p>
-      </div>
-      <button disabled={submitDisable} type="submit">Update</button>
+      <p>Hints: A song must have title, artirst and album info. Delete a data by setting it to empty</p>
+      <button
+        className="update-song-meta-modal-form-button hover-shadow"
+        disabled={submitDisable} type="submit">Update</button>
     </form>
-    <button onClick={handleCancel}>Cancel</button>
-  </>)
+    <button
+      className="update-song-meta-modal-form-button upload-modal-form-cancel-button hover-shadow"
+      onClick={handleCancel}>Cancel</button>
+  </div>)
 }
 
 export default UpdateSongMetadataModal

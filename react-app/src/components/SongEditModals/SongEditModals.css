@@ -1,0 +1,46 @@
+.update-song-meta-modal-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0px;
+  margin: 0px 0px 10px 0px;
+  gap: 0px;
+}
+
+.update-song-meta-modal-form label {
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  margin: 0px;
+}
+
+.update-song-meta-modal-form input {
+  padding: 5px 15px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 20px;
+  border: 1px solid lightgray;
+  margin: 10px 0px;
+}
+
+.update-song-meta-modal-form p {
+  margin: 10px 0px;
+}
+
+.update-song-meta-modal-compact-grid {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  align-items: center;
+  width: 100%;
+}
+
+.update-song-meta-modal-form-button {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ff5a60;
+  border: 0px solid #ff5a60;
+  color: white;
+  border-radius: 30px;
+}

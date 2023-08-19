@@ -21,11 +21,12 @@ const PostCommentForm = ({ song, user }) => {
     if (resErrors) {
       setErrors(Object.values(resErrors).join(". "));
     } else {
-      handleClear()
+      setCommentText("")
     }
   }
 
-  const handleClear = () => {
+  const handleClear = (e) => {
+    e.preventDefault();
     setCommentText("")
   }
 
@@ -39,17 +40,22 @@ const PostCommentForm = ({ song, user }) => {
     {errors && <p>{errors}</p>}
     <div>
       <form onSubmit={handleSubmit}>
-        <p>Leave a comment</p>
         <textarea
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
           placeholder="Leave your comment here"
           maxLength={255}
+          rows="4"
         />
-        <p>{counter} / 255</p>
-        <button disabled={submitDisable} type="submit">Send</button>
-        <button onClick={handleClear}>Clear</button>
+        <div className="post-comment-counter-container">
+          <p>{counter} / 255</p>
+          <div className="post-comment-buttons">
+            <button disabled={submitDisable} type="submit">Send</button>
+            <button onClick={handleClear} type="clear">Clear</button>
+          </div>
+        </div>
       </form>
+
     </div>
   </>)
 }

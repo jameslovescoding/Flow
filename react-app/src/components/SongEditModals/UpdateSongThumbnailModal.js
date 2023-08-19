@@ -5,6 +5,7 @@ import { useModal } from "../../context/Modal";
 import { uploadNewThumbnail } from "../../store/song";
 import CustomCompleteModal from "../CustomCompleteModal";
 import CustomErrorModal from "../CustomErrorModal";
+import FileUploader from "../FileUploader";
 
 const UpdateSongThumbnailModal = ({ song, modalTitle }) => {
   const history = useHistory(); // so that you can redirect after the image upload is successful
@@ -48,29 +49,42 @@ const UpdateSongThumbnailModal = ({ song, modalTitle }) => {
     closeModal()
   }
 
-  return (<>
+  const disableButton = image ? false : true;
+
+  const cancelButtonText = isLoading ? "Uploading..." : "Cancel";
+
+  return (<div className="upload-modal-container">
     <h1>{modalTitle}</h1>
     <form
       onSubmit={handleSubmit}
       encType="multipart/form-data"
+      className="upload-modal-form"
     >
-      <div>
-        <label>
-          Image File
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setImage(e.target.files[0])}
-            required
-          />
-        </label>
-      </div>
+      <FileUploader
+        buttonText={(<>
+          <i className="fa-solid fa-file-image fa-3x"></i><span>Upload Image</span>
+        </>)}
+        file={image}
+        setFile={setImage}
+        acceptFileTypes={"image/*"}
+      />
       <p>Please provide image files with the following extensions: .pdf, .png, .jpg, .jpeg, gif</p>
-      <button type="submit">Submit</button>
-      {(isLoading) && <p>Loading...</p>}
+      <button
+        className="upload-modal-form-button hover-shadow"
+        type="submit"
+        disabled={disableButton}
+      >
+        Submit
+      </button>
     </form>
-    <button onClick={handleCancel}>Cancel</button>
-  </>)
+    <button
+      className="upload-modal-form-button upload-modal-form-cancel-button hover-shadow"
+      onClick={handleCancel}
+      disabled={isLoading}
+    >
+      {cancelButtonText}
+    </button>
+  </div>)
 }
 
 export default UpdateSongThumbnailModal

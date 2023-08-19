@@ -5,6 +5,8 @@ import { replaceSongAudioFile } from "../../store/song";
 import CustomCompleteModal from "../CustomCompleteModal";
 import CustomErrorModal from "../CustomErrorModal";
 import { useModal } from "../../context/Modal";
+import FileUploader from "../FileUploader";
+
 
 const ReplaceAudioFileModal = ({ song }) => {
   const dispatch = useDispatch();
@@ -47,28 +49,35 @@ const ReplaceAudioFileModal = ({ song }) => {
     setSubmitDisable(!audio);
   }, [audio])
 
+  const disableButton = audio ? false : true;
+
+  const cancelButtonText = isUploading ? "Uploading..." : "Cancel";
+
   return (<>
     <h1>Replace Audio File For "{song.title}"</h1>
     <form
       onSubmit={handleSubmit}
       encType="multipart/form-data"
     >
-      <div>
-        <label>
-          Audio File
-          <input
-            type="file"
-            accept="audio/*"
-            onChange={(e) => setAudio(e.target.files[0])}
-            required
-          />
-        </label>
-        <p>We support the following audio formats: .mp3, .wav, .aac, .wma, .flac</p>
-      </div>
-      <button disabled={submitDisable} type="submit">Upload</button>
-      {isUploading && <p>Loading...</p>}
+
+      <FileUploader
+        buttonText={(<>
+          <i className="fa-solid fa-file-audio fa-3x"></i><span>Upload Audio</span>
+        </>)}
+        file={audio}
+        setFile={setAudio}
+        acceptFileTypes={"audio/*"}
+      />
+      <p>We support the following audio formats: .mp3, .wav, .aac, .wma, .flac</p>
+      <button
+        className="upload-modal-form-button hover-shadow"
+        disabled={submitDisable}
+        type="submit">Upload</button>
     </form>
-    <button onClick={handleCancel}>Cancel</button>
+    <button
+      className="upload-modal-form-button upload-modal-form-cancel-button hover-shadow"
+      onClick={handleCancel}
+      disabled={isUploading}>{cancelButtonText}</button>
   </>)
 }
 
