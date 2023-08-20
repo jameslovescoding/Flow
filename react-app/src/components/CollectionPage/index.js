@@ -8,6 +8,7 @@ function CollectionPage() {
   const dispatch = useDispatch();
   const [pageStatus, setPageStatus] = useState("loading");
   const allSongs = useSelector(state => state.song.songList);
+  const [noSongUploaded, setNoSongUploaded] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -24,6 +25,7 @@ function CollectionPage() {
     <h1>My Collection</h1>
     {pageStatus === "error" && <p>An error occurred</p>}
     {pageStatus === "done" && (<>
+      {!allSongs.length && <p>You have not uploaded any songs yet.</p>}
       <div className="song-list-container">
         {allSongs["all_songs"].map((song => {
           return (<>

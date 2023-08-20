@@ -17,6 +17,11 @@
   overflow: hidden;
 }
 
+.song-tile-meta-container p {
+  width: 150px;
+  overflow: hidden;
+}
+
 .song-list-container {
   display: grid;
   gap: 20px;
