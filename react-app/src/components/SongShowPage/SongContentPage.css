@@ -5,7 +5,7 @@
   align-items: center;
   width: 100%;
   padding: 50px 0px;
-  border-bottom: 1px solid lightgray;
+  margin-bottom: 50px;
 }
 
 .song-content-banner {
@@ -60,6 +60,11 @@
   align-items: center;
   gap: 20px;
   padding: 20px;
+}
+
+.song-content-banner-thumbnail-edit-section button:disabled {
+  background-color: lightgray;
+  color: darkgray;
 }
 
 .song-content-banner-thumbnail button,

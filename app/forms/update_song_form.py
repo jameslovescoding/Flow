@@ -17,17 +17,17 @@ class UpdateSongForm(FlaskForm):
 
     title = StringField('title', validators=[
         Optional(),
-        Length(min=1, max=40, message='Title should be no longer than 40 characters')
+        Length(min=1, max=256, message='Title should be no longer than 40 characters')
     ])
 
     artist = StringField('artist', validators=[
         Optional(),
-        Length(min=1, max=255, message='Artist should be no longer than 255 characters')
+        Length(min=1, max=256, message='Artist should be no longer than 255 characters')
     ])
 
     album = StringField('album', validators=[
         Optional(),
-        Length(min=1, max=40, message='Album should be no longer than 40 characters')
+        Length(min=1, max=256, message='Album should be no longer than 40 characters')
     ])
 
     # use ALLOWED_EXTENSIONS_AUDIO to check audio file extension
