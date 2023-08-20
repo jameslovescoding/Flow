@@ -25,6 +25,7 @@ function CollectionPage() {
     <h1>My Collection</h1>
     {pageStatus === "error" && <p>An error occurred</p>}
     {pageStatus === "done" && (<>
+      <h2>My Upload</h2>
       {!allSongs["all_songs"].length && <p>You have not uploaded any songs yet.</p>}
       <div className="song-list-container">
         {allSongs["all_songs"].map((song => {
