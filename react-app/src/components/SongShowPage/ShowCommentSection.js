@@ -20,12 +20,6 @@ const ShowCommentSection = ({ song, user }) => {
     }
   }, [song])
 
-  useEffect(() => {
-    console.log(allComments)
-  }, [allComments])
-
-
-
   return (<>
     <h2>All Comments</h2>
     {loadStatus === "error" && <p>An error occurred</p>}

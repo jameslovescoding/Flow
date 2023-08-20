@@ -193,6 +193,18 @@ export const getSongsForHomePage = () => async (dispatch) => {
   }
 }
 
+export const getSongsForCollectionPage = () => async (dispatch) => {
+  const response = await fetch('/api/songs/my');
+  if (response.ok) {
+    const songs = await response.json();
+    dispatch(setSongList(songs));
+    return null;
+  } else {
+    const data = await response.json();
+    return data.errors;
+  }
+}
+
 // single song is for single song create, view and update page
 
 const initialState = {

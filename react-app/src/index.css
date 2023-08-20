@@ -110,6 +110,15 @@ button,
   overflow: hidden;
 }
 
+.song-thumbnail-container-small {
+  height: 100px;
+  width: 100px;
+  border: 2px solid black;
+  box-sizing: border-box;
+  border-radius: 20%;
+  overflow: hidden;
+}
+
 .song-thumbnail-container-large {
   height: 300px;
   width: 300px;

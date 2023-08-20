@@ -1,0 +1,80 @@
+.my-comment-tile-container {
+  border-top: 1px solid lightgrey;
+  padding: 20px;
+  margin-bottom: 30px;
+  display: grid;
+  grid-template-areas:
+    "icon songmeta edit"
+    "commentcontent commentcontent edit";
+  grid-template-columns: 100px 1fr 40px;
+  grid-template-rows: 100px 1fr;
+  position: relative;
+  box-shadow:
+    -5px -5px 15px rgba(0, 0, 0, 0.2),
+    5px 5px 20px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+}
+
+.my-comment-tile-icon {
+  grid-area: icon;
+}
+
+.my-comment-tile-song-meta {
+  grid-area: songmeta;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  padding-left: 20px;
+}
+
+.my-comment-tile-song-meta h3,
+.my-comment-tile-song-meta p {
+  margin: 0px;
+}
+
+.my-comment-tile-text {
+  padding: 20px;
+}
+
+.my-comment-tile-comment-content {
+  grid-area: commentcontent;
+}
+
+.my-comment-tile-edit {
+  grid-area: edit;
+  height: 30px;
+  width: 30px;
+  border: 0px;
+  border-radius: 50%;
+  color: white;
+  background-color: darkgray;
+}
+
+.my-comment-tile-edit-button-section {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: baseline;
+  gap: 5px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 20px 20px 20px 20px;
+  border: 1px solid darkgray;
+  box-shadow:
+    -5px -5px 15px rgba(0, 0, 0, 0.2),
+    5px 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.my-comment-tile-edit-button-section button {
+  width: 90px;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: black;
+  border: 0px solid lightgray;
+  background-color: transparent;
+  border-radius: 30px;
+}

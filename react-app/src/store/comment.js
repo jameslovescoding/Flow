@@ -46,6 +46,18 @@ export const getAllComments = (songId) => async (dispatch) => {
   }
 }
 
+export const getMyComments = (songId) => async (dispatch) => {
+  const response = await fetch(`/api/comments/my`)
+  if (response.ok) {
+    const comments = await response.json();
+    dispatch(setAllComments(comments.all_comments));
+    return null;
+  } else {
+    const data = await response.json();
+    return data.errors;
+  }
+}
+
 export const createCommentForSong = (comment, songId) => async (dispatch) => {
   const response = await fetch(`/api/songs/${songId}/comments`, {
     method: "POST",
