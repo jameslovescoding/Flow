@@ -56,3 +56,11 @@ class Song(db.Model):
             'created_at': self.created_at,
             'updated_at': self.updated_at,
         }
+
+    def to_dict_comment(self):
+        return {
+            'title': self.title,
+            'artist': self.artist,
+            'album': self.album,
+            'thumbnail_url': self.thumbnail_url,
+        }

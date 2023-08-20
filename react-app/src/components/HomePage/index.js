@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { getSongsForHomePage } from "../../store/song";
-import SongTile from "./SongTile";
-import "./HomePage.css";
+import SongTile from "../SongTile";
 
 function HomePage() {
   const dispatch = useDispatch();

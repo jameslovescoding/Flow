@@ -8,6 +8,18 @@ from app.forms import (
 
 comment_routes = Blueprint('comments', __name__)
 
+
+
+# Get all my comments
+# GET /api/comments/my
+@comment_routes.route('/my')
+@login_required
+def get_all_my_comments():
+    all_comments = current_user.all_comments
+    return {"all_comments": [comment.to_dict() for comment in all_comments]}
+
+
+
 # 19 Update a comment by id
 # PUT /api/comments/:id
 

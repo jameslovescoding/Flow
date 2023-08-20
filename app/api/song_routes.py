@@ -31,6 +31,18 @@ def get_all_songs():
 
 
 
+# Get songs uploaded by user
+# GET /api/songs/my
+
+@song_routes.route('/my')
+@login_required
+def get_all_my_songs():
+    all_songs = current_user.owned_songs
+    print("get my songs", all_songs)
+    return {"all_songs": [song.to_dict() for song in all_songs]}
+
+
+
 # 12 Get a song by id
 # GET /api/songs/:id
 
@@ -375,7 +387,7 @@ def get_all_comments_by_song_id(id):
     if song is None:
         return {"errors": "song not found"}, 404
     res_dict = {"all_comments": [comment.to_dict() for comment in song.user_comments]}
-    print(res_dict)
+    #print(res_dict)
     return res_dict
 
 
