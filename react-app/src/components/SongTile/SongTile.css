@@ -20,6 +20,7 @@
 .song-tile-meta-container p {
   width: 100%;
   overflow: hidden;
+  white-space: nowrap;
 }
 
 .song-list-container {
