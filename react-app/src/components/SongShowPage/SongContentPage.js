@@ -50,13 +50,16 @@ const SongContentPage = ({ song, user }) => {
         <div className="song-content-banner-title">
           <h1>{song.title}</h1>
         </div>
-        <div className="song-content-banner-edit-button">
-          <EditModeButton
-            buttonText={"Edit Mode"}
-            onButtonClick={handleToggleEditMode}
-            buttonState={editMode ? "on" : "off"}
-          />
-        </div>
+        {
+          enableEditMode && <div className="song-content-banner-edit-button">
+            <EditModeButton
+              buttonText={"Edit Mode"}
+              onButtonClick={handleToggleEditMode}
+              buttonState={editMode ? "on" : "off"}
+            />
+          </div>
+        }
+
         {/* thumbnail */}
         <div className="song-content-banner-thumbnail">
           <div className="song-thumbnail-container-large ">
