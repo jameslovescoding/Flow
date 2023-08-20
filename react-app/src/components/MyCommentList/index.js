@@ -7,7 +7,7 @@ const MyCommentList = ({ commentList }) => {
   if (!commentList.length) {
     return (<>
       <p>0 comment</p>
-      <p>Be the first one to add comment.</p>
+      <p>You have not left any comments yet.</p>
     </>)
   }
 
