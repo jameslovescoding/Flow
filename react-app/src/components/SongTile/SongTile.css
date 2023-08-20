@@ -1,6 +1,6 @@
 .song-tile-container {
   height: 160px;
-  width: 320px;
+  width: 480px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -12,7 +12,7 @@
 
 .song-tile-meta-container {
   height: 150px;
-  width: 150px;
+  width: 300px;
   border-radius: 20%;
   overflow: hidden;
 }
