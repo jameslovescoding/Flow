@@ -64,13 +64,13 @@ button,
 /* page width */
 
 .page-container-narrow {
-  max-width: 600px;
-  margin: auto;
+  max-width: 700px;
+  margin: 0px auto 100px;
 }
 
 .page-container-wide {
   max-width: 1200px;
-  margin: auto;
+  margin: 0px auto 100px;
 }
 
 /* user icon */

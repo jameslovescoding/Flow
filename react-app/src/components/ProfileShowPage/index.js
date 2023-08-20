@@ -33,12 +33,13 @@ const ProfileShowPage = () => {
   const modalTitle = isUsingDefaultUserIcon ? "Upload Your Own Profile Picture" : "Replace Current Profile Picture"
 
   return (<>
-    <div className="page-container-narrow">
-      <h1>My Profile</h1>
+    <div className="page-container-narrow profile-page-container">
+      <h1 className="profile-page-heading">My Profile</h1>
       <EditModeButton
         buttonText={"Edit Mode"}
         onButtonClick={handleToggleEditMode}
         buttonState={editMode ? "on" : "off"}
+        addedClassName={"profile-page-edit"}
       />
       <div className="profile-page-card">
         <div className="profile-page-left">
