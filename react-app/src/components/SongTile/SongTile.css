@@ -1,6 +1,6 @@
 .song-tile-container {
   height: 160px;
-  width: 480px;
+  width: 340px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -12,7 +12,7 @@
 
 .song-tile-meta-container {
   height: 150px;
-  width: 300px;
+  width: 160px;
   border-radius: 20%;
   overflow: hidden;
 }
@@ -30,12 +30,4 @@
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
-@media (max-width: 789px) {
-  .song-list-container {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (min-width: 790px) and (max-width: 1000px) {
-  .song-list-container {}
-}
+/* 599 600-1199 1200-1799 1800-2399*/
