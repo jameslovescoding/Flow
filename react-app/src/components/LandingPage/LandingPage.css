@@ -1,0 +1,52 @@
+.landing-page-intro {
+  width: 100%;
+  box-sizing: border-box;
+  height: 80vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
+  padding-right: 10vw;
+  background-image: url("https://images.pexels.com/photos/3721941/pexels-photo-3721941.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+  background-size: cover;
+  background-position: center center;
+}
+
+.landing-page-intro h1 {
+  color: white;
+  font-size: XXx-large;
+}
+
+.landing-page-features h2,
+.landing-page-intro h2 {
+  color: white;
+  font-size: xx-large;
+}
+
+.landing-page-intro span {
+  color: rgb(255, 124, 146);
+  font-size: XXx-large;
+}
+
+.landing-page-intro p {
+  color: white;
+  font-size: large;
+}
+
+
+.landing-page-features {
+  margin-top: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  height: 70vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  padding-left: 10vw;
+  background-size: cover;
+  background-position: center center;
+  background-image: url("https://images.pexels.com/photos/1587927/pexels-photo-1587927.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+}
