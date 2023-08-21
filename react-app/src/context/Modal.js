@@ -28,10 +28,19 @@ export function ModalProvider({ children }) {
     closeModal // function to close the modal
   };
 
+  let blurClassName = "";
+
+  if (modalContent) {
+    blurClassName += "modal-background-app-blur"
+  }
+
   return (
     <>
-      <ModalContext.Provider value={contextValue}>
-        {children}
+      <ModalContext.Provider
+        value={contextValue}>
+        <div className={blurClassName}>
+          {children}
+        </div>
       </ModalContext.Provider>
       <div ref={modalRef} />
     </>

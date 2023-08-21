@@ -28,6 +28,10 @@
   z-index: 20;
 }
 
+.modal-background-app-blur {
+  filter: blur(4px);
+}
+
 /* Login and Sign Up */
 
 .auth-modal-container {
