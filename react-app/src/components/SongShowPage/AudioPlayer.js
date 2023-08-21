@@ -1,12 +1,13 @@
-import React, { Component } from 'react'
-import ReactPlayer from 'react-player'
-import Duration from './Duration'
+import React, { Component } from 'react';
+import ReactPlayer from 'react-player';
+import Duration from './Duration';
+import "./AudioPlayer.css";
 
 class MyAudioPlayer extends Component {
   state = {
     url: this.props.url,
     playing: false,
-    volume: 0.8,
+    volume: 0.5,
     muted: false,
     played: 0,
     loaded: 0,
@@ -46,6 +47,14 @@ class MyAudioPlayer extends Component {
   handlePause = () => {
     console.log('onPause')
     this.setState({ playing: false })
+  }
+
+  handleStop = () => {
+    console.log('onStop')
+    this.setState({
+      playing: false,
+    })
+    this.player.seekTo(parseFloat("0"))
   }
 
   handleSeekMouseDown = e => {
@@ -95,122 +104,79 @@ class MyAudioPlayer extends Component {
     const { url, playing, volume, muted, loop, played, loaded, duration } = this.state
     const SEPARATOR = ' · '
 
-    return (
-      <div >
-        <section className='section'>
-          <h1>ReactPlayer Demo</h1>
-          <div className='player-wrapper'>
-            <ReactPlayer
-              ref={this.ref}
-              className='react-player'
-              width='100%'
-              height='100%'
-              url={url}
-              playing={playing}
-              loop={loop}
-              volume={volume}
-              muted={muted}
-              onPlay={this.handlePlay}
-              onPause={this.handlePause}
-              onBuffer={() => console.log('onBuffer')}
-              onSeek={e => console.log('onSeek', e)}
-              onEnded={this.handleEnded}
-              onError={e => console.log('onError', e)}
-              onProgress={this.handleProgress}
-              onDuration={this.handleDuration}
-            />
+    return (<>
+      <div className='audio-player-container'>
+        <div className='audio-player-buttons'>
+          <div className='audio-player-play-pause'>
+            <button onClick={this.handlePlayPause}>{playing ? <i className="fa-solid fa-pause"></i> : <i className="fa-solid fa-play"></i>}</button>
+            <p>{playing ? 'Pause' : 'Play'}</p>
           </div>
-
-          <table>
-            <tbody>
-              <tr>
-                <th>Controls</th>
-                <td>
-                  <button onClick={this.handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
-                </td>
-              </tr>
-              <tr>
-                <th>Seek</th>
-                <td>
-                  <input
-                    type='range' min={0} max={0.999999} step='any'
-                    value={played}
-                    onMouseDown={this.handleSeekMouseDown}
-                    onChange={this.handleSeekChange}
-                    onMouseUp={this.handleSeekMouseUp}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <th>Volume</th>
-                <td>
-                  <input type='range' min={0} max={1} step='any' value={volume} onChange={this.handleVolumeChange} />
-                </td>
-              </tr>
-              <tr>
-                <th>
-                  <label htmlFor='muted'>Muted</label>
-                </th>
-                <td>
-                  <input id='muted' type='checkbox' checked={muted} onChange={this.handleToggleMuted} />
-                </td>
-              </tr>
-              <tr>
-                <th>
-                  <label htmlFor='loop'>Loop</label>
-                </th>
-                <td>
-                  <input id='loop' type='checkbox' checked={loop} onChange={this.handleToggleLoop} />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-        <section className='section'>
-
-          <h2>State</h2>
-
-          <table>
-            <tbody>
-              <tr>
-                <th>url</th>
-                <td className={!url ? 'faded' : ''}>
-                  {(url instanceof Array ? 'Multiple' : url) || 'null'}
-                </td>
-              </tr>
-              <tr>
-                <th>playing</th>
-                <td>{playing ? 'true' : 'false'}</td>
-              </tr>
-              <tr>
-                <th>volume</th>
-                <td>{volume.toFixed(3)}</td>
-              </tr>
-              <tr>
-                <th>played</th>
-                <td>{played.toFixed(3)}</td>
-              </tr>
-              <tr>
-                <th>loaded</th>
-                <td>{loaded.toFixed(3)}</td>
-              </tr>
-              <tr>
-                <th>duration</th>
-                <td><Duration seconds={duration} /></td>
-              </tr>
-              <tr>
-                <th>elapsed</th>
-                <td><Duration seconds={duration * played} /></td>
-              </tr>
-              <tr>
-                <th>remaining</th>
-                <td><Duration seconds={duration * (1 - played)} /></td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
+          <div className='audio-player-stop'>
+            <button onClick={this.handleStop}><i className="fa-solid fa-stop"></i></button>
+            <p>Stop</p>
+          </div>
+          <div className='audio-player-loop'>
+            <button onClick={this.handleToggleLoop}><i className="fa-solid fa-repeat"></i></button>
+            <p>Repeat</p>
+          </div>
+          <div className='audio-player-mute'>
+            <button onClick={this.handleToggleMuted}><i className="fa-solid fa-volume-xmark"></i></button>
+            <p>Mute</p>
+          </div>
+        </div>
+        <div className='audio-player-progress'>
+          <input
+            type='range' min={0} max={0.999999} step='any'
+            value={played}
+            onMouseDown={this.handleSeekMouseDown}
+            onChange={this.handleSeekChange}
+            onMouseUp={this.handleSeekMouseUp}
+          />
+          <div className='audio-player-progress-info'>
+            <p>
+              <span><Duration seconds={duration * played} /></span>
+              <span>Duration <Duration seconds={duration} /></span>
+              <span>-<Duration seconds={duration * (1 - played)} /></span>
+            </p>
+          </div>
+        </div>
+        <div className='audio-player-volume'>
+          <input type='range' min={0} max={1} step='any'
+            value={volume}
+            onChange={this.handleVolumeChange}
+          />
+          <div className='audio-player-volume-info'>
+            <p >
+              <span>Volume</span>
+              <span>{(volume * 100).toFixed(0)}%</span>
+            </p>
+          </div>
+        </div>
       </div>
-    )
+      <div>
+        <div className='player-wrapper'>
+          <ReactPlayer
+            ref={this.ref}
+            className='react-player'
+            width='100%'
+            height='100%'
+            url={url}
+            playing={playing}
+            loop={loop}
+            volume={volume}
+            muted={muted}
+            onPlay={this.handlePlay}
+            onPause={this.handlePause}
+            onBuffer={() => console.log('onBuffer')}
+            onSeek={e => console.log('onSeek', e)}
+            onEnded={this.handleEnded}
+            onError={e => console.log('onError', e)}
+            onProgress={this.handleProgress}
+            onDuration={this.handleDuration}
+          />
+        </div>
+      </div>
+    </>)
   }
 }
 

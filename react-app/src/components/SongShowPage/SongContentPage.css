@@ -16,7 +16,7 @@
     "control control control"
     "other comment comment";
   grid-template-columns: 360px 1fr 180px;
-  grid-template-rows: 80px 420px 1000px 1fr;
+  grid-template-rows: 80px 420px;
   gap: 0px;
   width: 960px;
 }
