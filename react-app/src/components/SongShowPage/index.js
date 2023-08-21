@@ -5,7 +5,7 @@ import { getSongById } from "../../store/song";
 import { useParams } from "react-router-dom";
 import SongContentPage from "./SongContentPage";
 
-function SongShowPage() {
+const SongShowPage = () => {
   const { songId } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -31,6 +31,7 @@ function SongShowPage() {
   }, [songId])
 
   return (<>
+    {pageStatus === "loading" && <p>loading...</p>}
     {pageStatus === "error" && <p>An error occurred</p>}
     {pageStatus === "done" && <SongContentPage song={currentSong} user={currentUser} />}
   </>)

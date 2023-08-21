@@ -14,9 +14,11 @@ import PostCommentForm from "./PostCommentForm";
 import ShowCommentSection from "./ShowCommentSection";
 import EditModeButton from "../EditModeButton";
 import "./SongContentPage.css";
+import MyAudioPlayer from "./AudioPlayer";
 
 const SongContentPage = ({ song, user }) => {
   const [editMode, setEditMode] = useState(false);
+  const [play, setPlay] = useState(false);
 
   const handleToggleEditMode = () => {
     setEditMode(!editMode);
@@ -29,6 +31,10 @@ const SongContentPage = ({ song, user }) => {
   const dateConverter = (yyyymmdd) => {
     const [year, month, day] = yyyymmdd.split("-")
     return [month, day, year].join("-")
+  }
+
+  const togglePlayPause = () => {
+    setPlay(!play);
   }
 
   let thumbnail;
@@ -121,9 +127,7 @@ const SongContentPage = ({ song, user }) => {
         </div>
         {/* control-panels */}
         <div className="control-panels">
-          <h2>Like</h2>
-          <h2>Comment</h2>
-          <h2>Play</h2>
+          <MyAudioPlayer url={song.s3_key} />
         </div>
         {/* other */}
         <div className="song-content-banner-other">
