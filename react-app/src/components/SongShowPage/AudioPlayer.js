@@ -116,11 +116,14 @@ class MyAudioPlayer extends Component {
             <p>Stop</p>
           </div>
           <div className='audio-player-loop'>
-            <button onClick={this.handleToggleLoop}><i className="fa-solid fa-repeat"></i></button>
-            <p>Repeat</p>
+            <button
+              onClick={this.handleToggleLoop}
+              value={loop}><i className="fa-solid fa-repeat"></i></button>
+            <p>Loop</p>
           </div>
           <div className='audio-player-mute'>
-            <button onClick={this.handleToggleMuted}><i className="fa-solid fa-volume-xmark"></i></button>
+            <button onClick={this.handleToggleMuted}
+              value={muted}><i className="fa-solid fa-volume-xmark"></i></button>
             <p>Mute</p>
           </div>
         </div>
