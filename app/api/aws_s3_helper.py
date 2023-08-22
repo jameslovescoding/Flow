@@ -5,7 +5,8 @@ import uuid
 
 
 BUCKET_NAME = os.environ.get("S3_BUCKET")
-S3_LOCATION = f"https://{BUCKET_NAME}/"
+S3_REGION = os.environ.get("S3_REGION")
+S3_LOCATION = f"https://{S3_REGION}/{BUCKET_NAME}/"
 ALLOWED_EXTENSIONS_IMAGE = {"pdf", "png", "jpg", "jpeg", "gif"}
 ALLOWED_EXTENSIONS_AUDIO = {"mp3", "wav", "aac", "wma", "flac"}
 
