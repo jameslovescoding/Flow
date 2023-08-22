@@ -38,7 +38,10 @@ db.init_app(app)
 Migrate(app, db)
 
 # Application Security
-CORS(app)
+# CORS(app)
+CORS(app, origins=["https://flow-85lr.onrender.com/",
+                   "https://s3.us-east-2.amazonaws.com/app-academy.capstone-project.sound-cloud-clone.flow/",
+                   "http://localhost:3000"])
 
 
 # Since we are deploying with Docker and Flask,
