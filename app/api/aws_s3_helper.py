@@ -6,7 +6,6 @@ import uuid
 
 BUCKET_NAME = os.environ.get("S3_BUCKET")
 S3_REGION = os.environ.get("S3_REGION")
-S3_LOCATION = f"https://{S3_REGION}/{BUCKET_NAME}/"
 ALLOWED_EXTENSIONS_IMAGE = {"pdf", "png", "jpg", "jpeg", "gif"}
 ALLOWED_EXTENSIONS_AUDIO = {"mp3", "wav", "aac", "wma", "flac"}
 
@@ -53,7 +52,7 @@ def upload_file_to_s3(file, acl="public-read"):
         # in case the your s3 upload fails
         return {"errors": str(e)}
 
-    return {"url": f"{S3_LOCATION}{file.filename}"}
+    return {"url": f"https://{S3_REGION}/{BUCKET_NAME}/{file.filename}"}
 
 
 
