@@ -5,7 +5,7 @@ import { updateSongMetadata } from "../../store/song";
 
 const UpdateSongMetadataModal = ({ metadata, song }) => {
   const dispatch = useDispatch();
-  const { closeModal, setModalContent } = useModal();
+  const { closeModal } = useModal();
   const [title, setTitle] = useState(metadata.title);
   const [artist, setArtist] = useState(metadata.artist);
   const [album, setAlbum] = useState(metadata.album);

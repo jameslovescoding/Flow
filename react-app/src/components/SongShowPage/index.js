@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { getSongById } from "../../store/song";
 import { useParams } from "react-router-dom";
 import SongContentPage from "./SongContentPage";

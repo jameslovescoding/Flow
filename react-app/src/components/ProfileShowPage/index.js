@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import UploadProfilePicModal from "./UploadProfilePicModal";
 import RemoveProfilePicModal from "./RemoveProfilePicModal";
 import UpdateAccountInfoModal from "./UpdateAccountInfoModal";

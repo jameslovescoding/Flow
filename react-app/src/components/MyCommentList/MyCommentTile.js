@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import OpenModalButton from "../OpenModalButton";
 import DeleteCommentModal from "./DeleteCommentModal";
 import EditCommentModal from "./EditCommentModal";

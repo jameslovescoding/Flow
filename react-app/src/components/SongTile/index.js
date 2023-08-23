@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect, useHistory } from "react-router-dom";
+import React from "react";
+import { useHistory } from "react-router-dom";
 import "./SongTile.css";
 
 const SongTile = ({ song }) => {

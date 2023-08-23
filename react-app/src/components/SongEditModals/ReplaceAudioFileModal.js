@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { replaceSongAudioFile } from "../../store/song";
 import CustomCompleteModal from "../CustomCompleteModal";
 import CustomErrorModal from "../CustomErrorModal";
