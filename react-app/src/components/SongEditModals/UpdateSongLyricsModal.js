@@ -5,7 +5,7 @@ import { updateSongLyrics } from "../../store/song";
 
 const UpdateSongLyricsModal = ({ currentLyrics, song }) => {
   const dispatch = useDispatch();
-  const { closeModal, setModalContent } = useModal();
+  const { closeModal } = useModal();
   const [lyrics, setLyrics] = useState(currentLyrics ? currentLyrics : "");
   const [counter, setCounter] = useState(currentLyrics ? currentLyrics.length : 0);
 

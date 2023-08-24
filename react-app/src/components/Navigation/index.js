@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import iconSrc from './favicon.png';
-import OpenModalButton from '../OpenModalButton';
 import UploadNewSongModalButton from './UploadNewSongModalButton';
 import SongCreateModal from '../SongCreateModal';
 
