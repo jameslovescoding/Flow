@@ -42,9 +42,7 @@ I am only aiming to achieve limited features because the time limit for 1 week f
 
 ## Screenshots
 
-![Flow Screenshot 1](https://github.com/jameslovescoding/AirDoD/blob/main/images/airdod_screenshot_1.png)
-
-![Flow Screenshot 2](https://github.com/jameslovescoding/AirDoD/blob/main/images/airdod_screenshot_2.png)
+![Flow Screenshot 1](https://github.com/jameslovescoding/Flow/blob/main/database_schema/Flow%20Screenshot.png)
 
 ## Future Implementation Goals
 
