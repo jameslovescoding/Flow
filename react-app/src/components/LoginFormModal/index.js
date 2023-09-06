@@ -77,7 +77,7 @@ function LoginFormModal() {
             </ul>
           </div>}
         <button className="auth-modal-form-button hover-shadow" disabled={submitDisable} type="submit">Log In</button>
-        <p>Or, you could slogin as demo user.</p>
+        <p>Or, you could login as demo user.</p>
       </form>
       <button className="auth-modal-form-button hover-shadow" onClick={handleLoginWithDemoUser}>Load Demo User Credential</button>
 
