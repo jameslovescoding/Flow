@@ -64,3 +64,9 @@ class Song(db.Model):
             'album': self.album,
             'thumbnail_url': self.thumbnail_url,
         }
+
+    def to_dict_with_comments_likes(self):
+        dictionary = self.to_dict()
+        dictionary["all_comments"] = [comment.to_dict() for comment in self.user_comments]
+        dictionary["liked_count"] = len(self.liked_users)
+        return dictionary

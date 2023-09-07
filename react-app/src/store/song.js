@@ -205,6 +205,36 @@ export const getSongsForCollectionPage = () => async (dispatch) => {
   }
 }
 
+// thunk for like songs and cancel likes
+
+export const createLikeForSong = (songId) => async (dispatch) => {
+  const response = await fetch(`/api/songs/${songId}/likes`, {
+    method: "POST",
+  });
+  if (response.ok) {
+    const updatedSong = await response.json();
+    dispatch(setSingleSong(updatedSong));
+    return null;
+  } else {
+    const data = await response.json();
+    return data.errors;
+  }
+}
+
+export const cancelLikeForSong = (songId) => async (dispatch) => {
+  const response = await fetch(`/api/songs/${songId}/likes`, {
+    method: "DELETE",
+  });
+  if (response.ok) {
+    const updatedSong = await response.json();
+    dispatch(setSingleSong(updatedSong));
+    return null;
+  } else {
+    const data = await response.json();
+    return data.errors;
+  }
+}
+
 // single song is for single song create, view and update page
 
 const initialState = {

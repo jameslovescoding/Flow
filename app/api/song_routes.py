@@ -27,7 +27,7 @@ song_routes = Blueprint('songs', __name__)
 @login_required
 def get_all_songs():
     all_songs = Song.query.all()
-    return {"all_songs": [song.to_dict() for song in all_songs]}
+    return {"all_songs": [song.to_dict_with_comments_likes() for song in all_songs]}
 
 
 
@@ -39,7 +39,7 @@ def get_all_songs():
 def get_all_my_songs():
     all_songs = current_user.owned_songs
     print("get my songs", all_songs)
-    return {"all_songs": [song.to_dict() for song in all_songs]}
+    return {"all_songs": [song.to_dict_with_comments_likes() for song in all_songs]}
 
 
 
@@ -58,7 +58,7 @@ def get_song_by_id(id):
     res = song.to_dict()
     res["all_comments"] = [comment.to_dict() for comment in song.user_comments]
     res["liked_count"] = len(song.liked_users)
-    return res
+    return song.to_dict_with_comments_likes()
 
 
 
@@ -453,7 +453,7 @@ def create_like_by_song_id(id):
     db.session.commit()
 
     # return message
-    return {"message": "Successfully liked the song"}
+    return song.to_dict_with_comments_likes()
 
 
 
@@ -480,4 +480,4 @@ def cancel_like_by_song_id(id):
     db.session.commit()
 
     # return message
-    return {"message": "Successfully unliked the song"}
+    return song.to_dict_with_comments_likes()
